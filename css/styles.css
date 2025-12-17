@@ -129,6 +129,7 @@ body {
   color: var(--color-text);
   line-height: 1.5;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Container */
@@ -851,6 +852,180 @@ body {
 
   .testimonial-card {
     width: min(90vw, 320px);
+  }
+}
+
+/* Contact CTA */
+.contact-cta {
+  position: relative;
+  padding: var(--space-xl) var(--space-sm);
+  color: var(--color-white);
+  isolation: isolate;
+}
+
+.contact-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  background: linear-gradient(180deg, #021428b5 0%, #010b18d9 100%),
+    url("/wealthix-advisors-ad/images/hero-bg.jpg") center/cover no-repeat;
+  z-index: -1;
+}
+
+.contact-cta__inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.contact-cta__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.contact-cta__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+.contact-cta__title {
+  margin: 0;
+  color: var(--color-primary);
+}
+
+.contact-cta__logo {
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: transparent;
+  padding: 0;
+}
+
+.contact-cta__info {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: 0;
+  margin: 0;
+}
+
+.contact-cta__info-item {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.contact-cta__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white-10);
+  color: var(--color-primary);
+  font-size: 1.4rem;
+}
+
+.contact-cta__info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.contact-cta__info-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-white-85);
+}
+
+.contact-cta__info-detail,
+.contact-cta__info-text a {
+  color: var(--color-white);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-cta__info-detail {
+  margin: 0;
+}
+
+.contact-cta__info-text a:hover,
+.contact-cta__info-text a:focus-visible {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.contact-cta__form-card {
+  background: var(--color-white);
+  border-radius: 24px;
+  padding: var(--space-md);
+  border: 1px solid var(--color-gray-light-30);
+  box-shadow: 0 20px 40px #0313262b;
+  max-width: 420px;
+  width: 100%;
+  margin-left: auto;
+  justify-self: end;
+}
+
+.contact-cta__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-gray-light-50);
+  background: transparent;
+  color: var(--color-black);
+  font: inherit;
+  transition: border 200ms ease, box-shadow 200ms ease;
+}
+
+.contact-field textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-10);
+  outline: none;
+}
+
+.contact-cta__submit {
+  width: 100%;
+  justify-content: center;
+  text-transform: none;
+}
+
+@media (max-width: 640px) {
+  .contact-cta__form-card {
+    border-radius: 20px;
+    padding: var(--space-sm);
+    justify-self: stretch;
+    margin-left: 0;
   }
 }
 
