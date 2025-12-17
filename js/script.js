@@ -10,14 +10,7 @@
   const defaultLabel = labelEl?.textContent ?? "Submit Your Enquiry";
   let submitting = false;
 
-  const requiredFields = [
-    "firstName",
-    "lastName",
-    "email",
-    "mobile",
-    "companyName",
-    "service",
-  ];
+  const requiredFields = ["fullName", "phone", "email", "service", "message"];
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -32,11 +25,11 @@
 
   const isFormValid = () => {
     const values = getValues();
-    if (!values.firstName || !values.lastName) return false;
+    if (!values.fullName) return false;
+    if (!values.phone) return false;
     if (!emailPattern.test(values.email)) return false;
-    if (!values.mobile) return false;
-    if (!values.companyName) return false;
     if (!values.service) return false;
+    if (!values.message) return false;
     return true;
   };
 

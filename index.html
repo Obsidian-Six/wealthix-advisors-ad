@@ -61,26 +61,27 @@
             </p>
           </div>
           <form id="hero-enquiry-form" class="hero-form__fields" novalidate>
-            <label class="form-field" for="hero-first-name">
-              <span>First Name</span>
+            <label class="form-field" for="hero-full-name">
+              <span>Full Name</span>
               <input
                 type="text"
-                id="hero-first-name"
-                name="firstName"
-                placeholder="First Name"
-                autocomplete="given-name"
+                id="hero-full-name"
+                name="fullName"
+                placeholder="Enter Your Name"
+                autocomplete="name"
                 required
               />
             </label>
 
-            <label class="form-field" for="hero-last-name">
-              <span>Last Name</span>
+            <label class="form-field" for="hero-phone">
+              <span>Mobile Number</span>
               <input
-                type="text"
-                id="hero-last-name"
-                name="lastName"
-                placeholder="Last Name"
-                autocomplete="family-name"
+                type="tel"
+                id="hero-phone"
+                name="phone"
+                placeholder="Enter Your Mobile Number"
+                autocomplete="tel"
+                inputmode="tel"
                 required
               />
             </label>
@@ -97,31 +98,6 @@
               />
             </label>
 
-            <label class="form-field" for="hero-mobile">
-              <span>Mobile</span>
-              <input
-                type="tel"
-                id="hero-mobile"
-                name="mobile"
-                placeholder="Enter Your Mobile Number"
-                autocomplete="tel"
-                inputmode="tel"
-                required
-              />
-            </label>
-
-            <label class="form-field" for="hero-company">
-              <span>Company Name</span>
-              <input
-                type="text"
-                id="hero-company"
-                name="companyName"
-                placeholder="Enter Your Company Name"
-                autocomplete="organization"
-                required
-              />
-            </label>
-
             <label class="form-field" for="hero-service">
               <span>Service</span>
               <select id="hero-service" name="service" required>
@@ -132,6 +108,17 @@
                 <option value="compliance">Compliance</option>
                 <option value="others">Others</option>
               </select>
+            </label>
+
+            <label class="form-field" for="hero-message">
+              <span>Your Message</span>
+              <textarea
+                id="hero-message"
+                name="message"
+                rows="3"
+                placeholder="Tell us about your requirements"
+                required
+              ></textarea>
             </label>
 
             <button
@@ -407,25 +394,25 @@
                 </li>
                 <li class="packages-card-list-item">
                   <span class="material-symbols-outlined" aria-hidden="true"
-                    >task_alt</span
+                    >done_all</span
                   >
                   <span>VAT Return</span>
                 </li>
                 <li class="packages-card-list-item">
                   <span class="material-symbols-outlined" aria-hidden="true"
-                    >task_alt</span
+                    >done_all</span
                   >
                   <span>Ongoing Advisory Support</span>
                 </li>
                 <li class="packages-card-list-item">
                   <span class="material-symbols-outlined" aria-hidden="true"
-                    >task_alt</span
+                    >done_all</span
                   >
                   <span>Dedicated Compliance Manager</span>
                 </li>
                 <li class="packages-card-list-item">
                   <span class="material-symbols-outlined" aria-hidden="true"
-                    >task_alt</span
+                    >done_all</span
                   >
                   <span>Physical Meetings</span>
                 </li>
@@ -438,6 +425,98 @@
         </div>
       </div>
     </section>
+    <section class="services" id="services">
+      <div class="container services-card">
+        <p class="services-eyebrow">
+          Corporate Tax, Accounting, and VAT Made Simple
+        </p>
+        <h2>Comprehensive Services for Confident Growth</h2>
+        <p class="services-subtext">
+          Wealthix Advisors provides end-to-end tax and accounting solutions to
+          keep your business compliant, efficient, and protected.
+        </p>
+        <div class="services-grid">
+          <article class="service-column">
+            <h3>Corporate Tax Services</h3>
+            <ul class="service-list">
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>Corporate Tax Registration</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>Corporate Tax Filing</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>Corporate Tax Consultation</span>
+              </li>
+            </ul>
+          </article>
+
+          <article class="service-column">
+            <h3>Accounting Services</h3>
+            <ul class="service-list">
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>Bookkeeping</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>Financial Reporting</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>Audit Support</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>Accounting Setup</span>
+              </li>
+            </ul>
+          </article>
+
+          <article class="service-column">
+            <h3>Value Added Tax Services</h3>
+            <ul class="service-list">
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>VAT Registration</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>VAT Filing</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined" aria-hidden="true"
+                  >check</span
+                >
+                <span>VAT Refunds</span>
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <script src="js/script.js" defer></script>
   </body>
 </html>

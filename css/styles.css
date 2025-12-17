@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:wdth,wght@75..100,100..900&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:wdth,wght@75..100,100..900&display=swap");
 
 @font-face {
   font-family: "Clash Display";
@@ -90,7 +90,7 @@
   --space-xl: 3.5rem;
   --space-2xl: 4.5rem;
 
-  --hero-form-overlap: clamp(180px, 18vw, 320px);
+  --hero-form-overlap: clamp(220px, 22vw, 360px);
 
   /* Typography scale */
   --text-3xl: 56px;
@@ -253,7 +253,7 @@ body {
   display: grid;
   gap: var(--space-sm);
   box-shadow: none;
-  z-index: 0;
+  z-index: 2;
 }
 
 .hero::before {
@@ -312,11 +312,15 @@ body {
   background: var(--color-white);
   color: var(--color-black);
   border-radius: 24px;
-  padding: var(--space-lg);
+  padding: var(--space-md);
   border: 1px solid var(--color-gray-light-30);
   box-shadow: 0 20px 45px #0313261a;
   transform: translateY(var(--hero-form-overlap));
   will-change: transform;
+  max-width: 420px;
+  margin-left: auto;
+  position: relative;
+  z-index: 3;
 }
 
 .hero-form__eyebrow {
@@ -350,27 +354,14 @@ body {
 }
 
 .hero-form__fields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-md);
-}
-
-.hero-form__fields > label {
-  grid-column: span 2;
-}
-
-.hero-form__fields > label:nth-child(-n + 2) {
-  grid-column: span 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
 
 @media (max-width: 640px) {
   .hero {
     padding: var(--space-lg);
-  }
-
-  .hero-form__fields > label,
-  .hero-form__fields > label:nth-child(-n + 2) {
-    grid-column: span 2;
   }
 }
 
@@ -387,7 +378,8 @@ body {
 }
 
 .form-field input,
-.form-field select {
+.form-field select,
+.form-field textarea {
   width: 100%;
   margin-top: var(--space-xs);
   padding: 0.85rem 1rem;
@@ -399,7 +391,8 @@ body {
   transition: border 200ms ease, box-shadow 200ms ease;
 }
 
-.form-field input::placeholder {
+.form-field input::placeholder,
+.form-field textarea::placeholder {
   color: var(--color-gray-dark);
 }
 
@@ -407,8 +400,14 @@ body {
   color: var(--color-black);
 }
 
+.form-field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
 .form-field input:focus,
-.form-field select:focus {
+.form-field select:focus,
+.form-field textarea:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-10);
   outline: none;
@@ -416,9 +415,8 @@ body {
 
 .hero-form__submit {
   margin-top: var(--space-xs);
-  grid-column: span 2;
-  justify-content: space-between;
-  max-width: 18rem;
+  width: 100%;
+  justify-content: center;
 }
 
 .hero-form__submit[disabled] {
@@ -427,8 +425,8 @@ body {
 }
 
 .form-message {
-  grid-column: span 2;
   font-size: 0.9rem;
+  margin-top: var(--space-2xs);
 }
 
 .form-message[hidden] {
@@ -610,5 +608,78 @@ body {
 @media (max-width: 640px) {
   .packages-card {
     width: 100%;
+  }
+}
+
+/* Services */
+.services {
+  padding: var(--space-2xl) var(--space-sm);
+}
+
+.services-card {
+  max-width: 1200px;
+  margin-inline: auto;
+  background: var(--color-white);
+  padding: var(--space-2xl);
+  text-align: center;
+}
+
+.services-eyebrow {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.services-card h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  margin-top: var(--space-xs);
+}
+
+.services-subtext {
+  color: var(--color-gray-dark);
+  max-width: 60ch;
+  margin: var(--space-sm) auto 0;
+}
+
+.services-grid {
+  margin-top: var(--space-xl);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-lg);
+  text-align: left;
+}
+
+.service-column h3 {
+  font-size: 1.2rem;
+  margin-bottom: var(--space-sm);
+  color: var(--color-primary);
+}
+
+.service-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.service-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.service-list .material-symbols-outlined {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+}
+
+@media (max-width: 640px) {
+  .services-card {
+    padding: var(--space-xl);
   }
 }
