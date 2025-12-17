@@ -265,7 +265,7 @@ body {
   width: 100vw;
   height: 100%;
   background: linear-gradient(180deg, #021428b5 0%, #010b18d9 100%),
-    url("images/hero-bg.jpg") center/cover no-repeat;
+    url("/images/hero-bg.jpg") center/cover no-repeat;
   z-index: -1;
 }
 
@@ -487,5 +487,127 @@ body {
 
   .manage-spacer {
     display: none;
+  }
+}
+
+/* Packages */
+.packages-hero {
+  position: relative;
+  padding: var(--space-2xl) 0;
+  color: var(--color-white);
+  overflow: hidden;
+}
+
+.packages-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  background: linear-gradient(178.91deg, #080808 36.46%, #08080800 126.28%),
+    url("/images/packages-hero-bg.jpg") center/cover no-repeat;
+  z-index: -1;
+}
+
+.packages-hero__inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.packages-hero__inner h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 3.5vw, 3rem);
+}
+
+.packages-hero__inner h2 span {
+  color: var(--color-primary);
+}
+
+.packages-hero__inner p {
+  max-width: 36rem;
+  margin-inline: auto;
+  color: var(--color-white-85);
+}
+
+.packages-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.packages-card {
+  width: min(100%, 280px);
+  border: 2px solid var(--color-primary);
+  border-radius: 20px;
+  padding: var(--space-sm);
+  background: var(--color-white);
+  color: var(--color-black);
+  display: flex;
+  flex-direction: column;
+}
+
+.packages-card-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.packages-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.packages-card-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  text-align: left;
+}
+
+.packages-card-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.packages-card-list-item .material-symbols-outlined {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.packages-card-btn {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+}
+
+.packages-card-btn:hover,
+.packages-card-btn:focus-visible {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+@media (max-width: 640px) {
+  .packages-card {
+    width: 100%;
   }
 }
