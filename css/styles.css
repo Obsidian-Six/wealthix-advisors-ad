@@ -265,7 +265,7 @@ body {
   transform: translateX(-50%);
   width: 100vw;
   height: 100%;
-  background: linear-gradient(180deg, #021428b5 0%, #010b18d9 100%),
+  background: linear-gradient(180deg, #0214284d 0%, #010b184d 100%),
     url("/wealthix-advisors-ad/images/hero-bg.jpg") center/cover no-repeat;
   z-index: -1;
 }
@@ -302,6 +302,15 @@ body {
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.hero-whatsapp-link {
+  transition: transform 300ms ease;
+}
+
+.hero-whatsapp-link:hover {
+  scale: 1.1;
 }
 
 .hero-form {
@@ -526,7 +535,7 @@ body {
   color: var(--color-primary);
 }
 
-.packages-hero__inner p {
+.packages-hero__inner-text {
   max-width: 36rem;
   margin-inline: auto;
   color: var(--color-white-85);
@@ -536,25 +545,34 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   gap: var(--space-md);
   margin-top: var(--space-xl);
 }
 
 .packages-card {
-  width: min(100%, 280px);
+  width: min(100%, 360px);
   border: 2px solid var(--color-primary);
-  border-radius: 20px;
-  padding: var(--space-sm);
+  border-radius: 12px;
+  padding: var(--space-md);
   background: var(--color-white);
   color: var(--color-black);
   display: flex;
   flex-direction: column;
+  height: fit-content;
 }
 
 .packages-card-header {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--color-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.packages-card-subheader {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-gray-dark);
   margin-bottom: var(--space-sm);
 }
 
@@ -589,21 +607,7 @@ body {
 }
 
 .packages-card-btn {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-primary);
-  background: transparent;
-  color: var(--color-primary);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 200ms ease, color 200ms ease;
-}
-
-.packages-card-btn:hover,
-.packages-card-btn:focus-visible {
-  background: var(--color-primary);
-  color: var(--color-white);
+  margin: 0 auto;
 }
 
 @media (max-width: 640px) {
@@ -614,7 +618,7 @@ body {
 
 /* Services */
 .services {
-  padding: var(--space-2xl) var(--space-sm);
+  padding: var(--space-md) var(--space-sm);
 }
 
 .services-card {
@@ -688,8 +692,8 @@ body {
 /* Covers */
 .covers {
   position: relative;
-  padding: var(--space-2xl) var(--space-sm);
-  margin-block: var(--space-2xl);
+  padding: var(--space-md) var(--space-sm);
+  margin-block: var(--space-md);
   border-radius: 36px;
   background: linear-gradient(135deg, #f1fbff 0%, #fdfbff 45%, #eff7ff 100%);
   overflow: hidden;
@@ -783,7 +787,7 @@ body {
 
 /* Testimonials */
 .testimonials {
-  padding: var(--space-2xl) var(--space-sm);
+  padding: var(--space-sm) var(--space-sm);
 }
 
 .testimonials__inner {
@@ -966,7 +970,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 100vw;
-  background: linear-gradient(180deg, #021428b5 0%, #010b18d9 100%),
+  background: linear-gradient(180deg, #0214284d 0%, #010b184d 100%),
     url("/wealthix-advisors-ad/images/hero-bg.jpg") center/cover no-repeat;
   z-index: -1;
 }
@@ -1127,8 +1131,8 @@ body {
 
 /* FAQ */
 .faqs {
-  padding: var(--space-2xl) var(--space-sm);
-  margin-block: var(--space-2xl);
+  padding: var(--space-md) var(--space-sm);
+  margin-block: var(--space-md);
 }
 
 .faqs__inner {
