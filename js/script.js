@@ -125,6 +125,41 @@
 })();
 
 (() => {
+  const toggle = document.querySelector("[data-packages-toggle]");
+  const container = document.querySelector(".packages-container");
+  if (!toggle || !container) return;
+
+  const packageCards = container.querySelectorAll(".packages-card");
+  const customizeCard = container.querySelector(".customize-card");
+
+  const setView = (view) => {
+    const nextView = view === "customize" ? "customize" : "packages";
+    toggle.setAttribute("data-active", nextView);
+    container.setAttribute("data-view", nextView);
+    toggle.querySelectorAll("[data-view]").forEach((button) => {
+      const isActive = button.dataset.view === nextView;
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+
+    packageCards.forEach((card) => {
+      card.hidden = nextView !== "packages";
+    });
+
+    if (customizeCard) {
+      customizeCard.hidden = nextView !== "customize";
+    }
+  };
+
+  toggle.addEventListener("click", (event) => {
+    const target = event.target.closest("[data-view]");
+    if (!target) return;
+    setView(target.dataset.view ?? "packages");
+  });
+
+  setView("packages");
+})();
+
+(() => {
   const carousel = document.getElementById("testimonial-carousel");
   if (!carousel) return;
 

@@ -184,7 +184,6 @@
           growing your business with confidence and clarity.
         </p>
       </div>
-      <div class="manage-spacer" aria-hidden="true"></div>
     </section>
     <section class="packages-hero" id="packages">
       <div class="container packages-hero__inner">
@@ -193,7 +192,32 @@
           Flexible plans for every business size and activity level. Select the
           package that aligns with your financial needs.
         </p>
-        <div class="packages-container">
+        <div
+          class="packages-toggle"
+          data-packages-toggle
+          data-active="packages"
+          role="group"
+          aria-label="Package view toggle"
+        >
+          <button
+            type="button"
+            class="packages-toggle__option"
+            data-view="packages"
+            aria-pressed="true"
+          >
+            Packages
+          </button>
+          <button
+            type="button"
+            class="packages-toggle__option"
+            data-view="customize"
+            aria-pressed="false"
+          >
+            Customize
+          </button>
+          <span class="packages-toggle__thumb" aria-hidden="true"></span>
+        </div>
+        <div class="packages-container" data-view="packages">
           <article class="packages-card">
             <h3 class="packages-card-header">Basic Package</h3>
             <p class="packages-card-subheader">For Startups</p>
@@ -412,6 +436,27 @@
                 Get Quote
               </button>
             </div>
+          </article>
+
+          <article class="customize-card" hidden>
+            <p class="customize-card__eyebrow">Tailored Accounting</p>
+            <h3 class="customize-card__title">
+              A Smarter Accounting Package&mdash;Designed Just for You
+            </h3>
+            <p class="customize-card__copy">
+              Every business runs differently. We tailor your accounting
+              services to match your operations, budget, and growth
+              stage&mdash;so you get exactly what you need, nothing you
+              don&rsquo;t.
+            </p>
+            <a href="#contact" class="btn btn-primary customize-card__cta">
+              <span
+                class="material-symbols-outlined btn-icon"
+                aria-hidden="true"
+                >arrow_right_alt</span
+              >
+              Build My Package
+            </a>
           </article>
         </div>
       </div>
