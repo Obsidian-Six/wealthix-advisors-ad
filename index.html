@@ -261,7 +261,12 @@
                   <span>Support Channels (Email Only)</span>
                 </li>
               </ul>
-              <button type="button" class="btn btn-primary packages-card-btn">
+              <button
+                type="button"
+                class="btn btn-primary packages-card-btn"
+                data-modal-trigger
+                data-service="basic-package"
+              >
                 <span
                   class="material-symbols-outlined btn-icon"
                   aria-hidden="true"
@@ -332,7 +337,12 @@
                   <span>Accounting Software Implementation (Zoho, QB)</span>
                 </li>
               </ul>
-              <button type="button" class="btn btn-primary packages-card-btn">
+              <button
+                type="button"
+                class="btn btn-primary packages-card-btn"
+                data-modal-trigger
+                data-service="standard-package"
+              >
                 <span
                   class="material-symbols-outlined btn-icon"
                   aria-hidden="true"
@@ -427,7 +437,12 @@
                   <span>Accounting Software Implementation (Zoho, QB)</span>
                 </li>
               </ul>
-              <button type="button" class="btn btn-primary packages-card-btn">
+              <button
+                type="button"
+                class="btn btn-primary packages-card-btn"
+                data-modal-trigger
+                data-service="premium-package"
+              >
                 <span
                   class="material-symbols-outlined btn-icon"
                   aria-hidden="true"
@@ -449,14 +464,19 @@
               stage&mdash;so you get exactly what you need, nothing you
               don&rsquo;t.
             </p>
-            <a href="#contact" class="btn btn-primary customize-card__cta">
+            <button
+              type="button"
+              class="btn btn-primary customize-card__cta"
+              data-modal-trigger
+              data-service="tailored-plan"
+            >
               <span
                 class="material-symbols-outlined btn-icon"
                 aria-hidden="true"
                 >arrow_right_alt</span
               >
-              Build My Package
-            </a>
+              Get Your Package
+            </button>
           </article>
         </div>
       </div>
@@ -1208,6 +1228,137 @@
         </div>
       </div>
     </section>
+
+    <div class="enquiry-modal" data-modal hidden aria-hidden="true">
+      <div
+        class="enquiry-modal__overlay"
+        data-modal-overlay
+        data-modal-close
+      ></div>
+      <div
+        class="enquiry-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="enquiry-modal-title"
+      >
+        <button
+          type="button"
+          class="enquiry-modal__close"
+          aria-label="Close enquiry form"
+          data-modal-close
+        >
+          <span class="material-symbols-outlined" aria-hidden="true"
+            >close</span
+          >
+        </button>
+        <div class="enquiry-modal__content">
+          <p class="enquiry-modal__eyebrow">Priority Consultation</p>
+          <h3 class="enquiry-modal__title" id="enquiry-modal-title">
+            Request a Tailored Quote
+          </h3>
+          <p class="enquiry-modal__copy">
+            Share your contact details and preferred service so our
+            FTA-accredited team can prepare a custom proposal within one
+            business day.
+          </p>
+          <form class="enquiry-modal__form" id="modal-enquiry-form" novalidate>
+            <label class="form-field" for="modal-full-name">
+              <span>Full Name</span>
+              <input
+                type="text"
+                id="modal-full-name"
+                name="fullName"
+                placeholder="Enter Your Full Name"
+                autocomplete="name"
+                required
+              />
+            </label>
+
+            <label class="form-field" for="modal-phone">
+              <span>Phone</span>
+              <input
+                type="tel"
+                id="modal-phone"
+                name="phone"
+                placeholder="Enter Your Mobile Number"
+                autocomplete="tel"
+                inputmode="tel"
+                required
+              />
+            </label>
+
+            <label class="form-field" for="modal-email">
+              <span>Email</span>
+              <input
+                type="email"
+                id="modal-email"
+                name="email"
+                placeholder="Enter Your Email"
+                autocomplete="email"
+                required
+              />
+            </label>
+
+            <label class="form-field" for="modal-service">
+              <span>Service</span>
+              <select
+                id="modal-service"
+                name="service"
+                data-modal-service
+                required
+              >
+                <option value="">Choose Your Service</option>
+                <option value="basic-package">Basic Package</option>
+                <option value="standard-package">Standard Package</option>
+                <option value="premium-package">Premium Package</option>
+                <option value="tailored-plan">Tailored Plan</option>
+                <option value="tax">Tax Advisory</option>
+                <option value="vat">VAT Services</option>
+                <option value="accounting">Accounting</option>
+                <option value="compliance">Compliance</option>
+                <option value="others">Others</option>
+              </select>
+            </label>
+
+            <button type="submit" class="btn btn-primary enquiry-modal__submit">
+              <span>Book My Consultation</span>
+              <span
+                class="material-symbols-outlined btn-icon"
+                aria-hidden="true"
+                >arrow_right_alt</span
+              >
+            </button>
+            <div
+              class="enquiry-modal__contact-cta"
+              aria-label="Instant expert assistance"
+            >
+              <span class="enquiry-modal__divider" aria-hidden="true"></span>
+              <p class="enquiry-modal__contact-label">Prefer to talk now?</p>
+              <div class="enquiry-modal__contact-links">
+                <a href="tel:+971527941604" class="enquiry-modal__contact-link">
+                  <span class="material-symbols-outlined" aria-hidden="true"
+                    >call</span
+                  >
+                  <span>Call our expert</span>
+                </a>
+                <span class="enquiry-modal__contact-sep">or</span>
+                <a
+                  href="https://wa.me/+971527941604"
+                  class="enquiry-modal__contact-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true"
+                    >chat</span
+                  >
+                  <span>Chat with our expert</span>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <script src="js/script.js" defer></script>
   </body>

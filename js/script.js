@@ -160,6 +160,119 @@
 })();
 
 (() => {
+  const modal = document.querySelector("[data-modal]");
+  const triggers = document.querySelectorAll("[data-modal-trigger]");
+  if (!modal || !triggers.length) return;
+
+  const serviceSelect = modal.querySelector("[data-modal-service]");
+  const closeButtons = modal.querySelectorAll("[data-modal-close]");
+  const overlay = modal.querySelector("[data-modal-overlay]");
+  const firstField = modal.querySelector("#modal-full-name");
+  const focusableSelector =
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  let lastFocusedElement = null;
+
+  const isVisible = (element) =>
+    element instanceof HTMLElement &&
+    !!(
+      element.offsetWidth ||
+      element.offsetHeight ||
+      element.getClientRects().length
+    );
+
+  const getFocusableElements = () =>
+    Array.from(modal.querySelectorAll(focusableSelector)).filter(
+      (el) =>
+        el instanceof HTMLElement &&
+        !el.hasAttribute("disabled") &&
+        el.tabIndex !== -1 &&
+        !el.hasAttribute("hidden") &&
+        isVisible(el)
+    );
+
+  const setServiceValue = (value) => {
+    if (!serviceSelect) return;
+    const hasValue = Array.from(serviceSelect.options).some(
+      (option) => option.value === value
+    );
+    serviceSelect.value = hasValue ? value : "";
+  };
+
+  const openModal = (serviceValue) => {
+    lastFocusedElement = document.activeElement;
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    setServiceValue(serviceValue ?? "");
+    requestAnimationFrame(() => {
+      firstField?.focus();
+    });
+  };
+
+  const closeModal = () => {
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    if (serviceSelect) {
+      serviceSelect.value = "";
+    }
+    if (lastFocusedElement instanceof HTMLElement) {
+      lastFocusedElement.focus();
+    }
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal(trigger.getAttribute("data-service"));
+    });
+  });
+
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", closeModal);
+  });
+
+  if (overlay) {
+    overlay.addEventListener("click", closeModal);
+  }
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  const modalForm = document.getElementById("modal-enquiry-form");
+  modalForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    closeModal();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (modal.hidden) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeModal();
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const focusable = getFocusableElements();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+})();
+
+(() => {
   const carousel = document.getElementById("testimonial-carousel");
   if (!carousel) return;
 

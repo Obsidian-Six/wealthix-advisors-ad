@@ -132,6 +132,30 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) rgba(8, 8, 8, 0.2);
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background: rgba(8, 8, 8, 0.08);
+}
+
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-primary), #0081ec);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #21c4ff, var(--color-primary));
+}
+
 /* Container */
 .container {
   width: 100%;
@@ -1226,6 +1250,238 @@ body {
     padding: var(--space-sm);
     justify-self: stretch;
     margin-left: 0;
+  }
+}
+
+/* Modal */
+body.modal-open {
+  overflow: hidden;
+}
+
+.enquiry-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm);
+  z-index: 1000;
+}
+
+.enquiry-modal[hidden] {
+  display: none;
+}
+
+.enquiry-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.enquiry-modal__dialog {
+  position: relative;
+  width: min(700px, calc(100% - 2rem));
+  min-height: 500px;
+  height: min(500px, calc(100vh - 2rem));
+  max-height: calc(100vh - 2rem);
+  border-radius: 28px;
+  border: 2px solid var(--color-primary);
+  padding: var(--space-lg);
+  color: var(--color-white);
+  box-shadow: 0 35px 65px #03132666;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+
+.enquiry-modal__dialog::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #000000b3 0%, #000000b3 100%),
+    url("/wealthix-advisors-ad/images/hero-bg.jpg") center/cover no-repeat;
+  z-index: -1;
+}
+
+.enquiry-modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-sm) 0.35rem var(--space-sm) 0;
+  margin-top: var(--space-sm);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) rgba(255, 255, 255, 0.1);
+}
+
+.enquiry-modal__content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.enquiry-modal__content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.enquiry-modal__content::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+
+.enquiry-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--color-white);
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.enquiry-modal__close:hover,
+.enquiry-modal__close:focus-visible {
+  background: var(--color-white);
+  color: var(--color-black);
+  transform: scale(1.05);
+  outline: none;
+}
+
+.enquiry-modal__eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.enquiry-modal__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 4vw, 2.4rem);
+  margin: 0;
+}
+
+.enquiry-modal__copy {
+  margin: 0;
+  color: var(--color-white-85);
+}
+
+.enquiry-modal__form {
+  margin-top: var(--space-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 55px #03132630;
+  backdrop-filter: blur(8px);
+}
+
+.enquiry-modal__submit {
+  align-self: flex-start;
+}
+
+.enquiry-modal__form .form-field span {
+  color: var(--color-white-85);
+}
+
+.enquiry-modal__form .form-field input,
+.enquiry-modal__form .form-field select,
+.enquiry-modal__form .form-field textarea {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--color-white);
+}
+
+.enquiry-modal__form .form-field input::placeholder,
+.enquiry-modal__form .form-field textarea::placeholder {
+  color: var(--color-white-85);
+}
+
+.enquiry-modal__form .form-field input:focus,
+.enquiry-modal__form .form-field select:focus,
+.enquiry-modal__form .form-field textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(0, 173, 239, 0.35);
+}
+
+.enquiry-modal__contact-cta {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+}
+
+.enquiry-modal__divider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--color-gray-light-30);
+}
+
+.enquiry-modal__contact-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin: 0;
+}
+
+.enquiry-modal__contact-links {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.enquiry-modal__contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: color 200ms ease, text-decoration-color 200ms ease;
+}
+
+.enquiry-modal__contact-link:hover,
+.enquiry-modal__contact-link:focus-visible {
+  color: #21c4ff;
+  text-decoration-color: currentColor;
+  outline: none;
+}
+
+.enquiry-modal__contact-sep {
+  font-size: 0.85rem;
+  color: var(--color-gray-dark);
+}
+
+@media (max-width: 640px) {
+  .enquiry-modal__dialog {
+    padding: var(--space-md);
+    width: calc(100% - 1.5rem);
+    min-height: auto;
+    height: min(500px, calc(100vh - 1.5rem));
+  }
+
+  .enquiry-modal__form {
+    padding: var(--space-sm);
+  }
+
+  .enquiry-modal__contact-links {
+    flex-direction: column;
+    gap: var(--space-2xs);
   }
 }
 
