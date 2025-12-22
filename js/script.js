@@ -1,4 +1,39 @@
 // Hero enquiry form: validates fields, mocks submission, and handles UI feedback
+const alertFormValues = (form) => {
+  if (!form) return;
+  const formData = new FormData(form);
+  const lines = [];
+  formData.forEach((value, key) => {
+    lines.push(`${key}: ${value}`);
+  });
+  const message = lines.length
+    ? `Form values:\n${lines.join("\n")}`
+    : "Form submitted with no fields.";
+  alert(message);
+};
+
+const initIntlTelInputs = () => {
+  const { intlTelInput } = window;
+  if (typeof intlTelInput !== "function") return;
+  const inputs = document.querySelectorAll("[data-intl-phone]");
+  if (!inputs.length) return;
+
+  inputs.forEach((input) => {
+    if (input.dataset.intlInitialized === "true") return;
+    intlTelInput(input, {
+      initialCountry: "ae",
+      loadUtils: () =>
+        import(
+          "https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/js/utils.js"
+        ),
+    });
+    input.dataset.intlInitialized = "true";
+  });
+};
+
+document.addEventListener("DOMContentLoaded", initIntlTelInputs);
+
+// Hero enquiry form: validates fields, mocks submission, and handles UI feedback
 (() => {
   const form = document.getElementById("hero-enquiry-form");
   if (!form) return;
@@ -76,6 +111,8 @@
       updateButton();
       return;
     }
+
+    alertFormValues(form);
 
     submitting = true;
     setError("");
@@ -249,6 +286,7 @@
   const modalForm = document.getElementById("modal-enquiry-form");
   modalForm?.addEventListener("submit", (event) => {
     event.preventDefault();
+    alertFormValues(modalForm);
     closeModal();
   });
 
@@ -305,5 +343,16 @@
         scrollByDirection(dir);
       }
     });
+  });
+})();
+
+// Contact CTA form: basic alert preview before backend wiring
+(() => {
+  const contactForm = document.querySelector(".contact-cta__form");
+  if (!contactForm) return;
+
+  contactForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    alertFormValues(contactForm);
   });
 })();

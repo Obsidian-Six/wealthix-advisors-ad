@@ -9,6 +9,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;600"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/css/intlTelInput.css"
+    />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
@@ -120,6 +124,7 @@
                 placeholder="Enter Your Mobile Number"
                 autocomplete="tel"
                 inputmode="tel"
+                data-intl-phone
                 required
               />
             </label>
@@ -1287,11 +1292,13 @@
             <div class="contact-field">
               <input
                 type="tel"
+                id="contact-phone"
                 name="contactPhone"
                 placeholder="Phone Number"
                 aria-label="Phone Number"
                 autocomplete="tel"
                 inputmode="tel"
+                data-intl-phone
                 required
               />
             </div>
@@ -1377,6 +1384,7 @@
                 placeholder="Enter Your Mobile Number"
                 autocomplete="tel"
                 inputmode="tel"
+                data-intl-phone
                 required
               />
             </label>
@@ -1454,6 +1462,7 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/js/intlTelInput.min.js"></script>
     <script src="js/script.js" defer></script>
   </body>
 </html>

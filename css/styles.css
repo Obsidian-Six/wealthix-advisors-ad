@@ -428,6 +428,10 @@ html::-webkit-scrollbar-thumb:hover {
   transition: border 200ms ease, box-shadow 200ms ease;
 }
 
+.iti {
+  width: 100%;
+}
+
 .form-field input::placeholder,
 .form-field textarea::placeholder {
   color: var(--color-gray-dark);
