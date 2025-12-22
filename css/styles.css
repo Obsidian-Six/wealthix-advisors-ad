@@ -301,7 +301,6 @@ body {
 
 .hero-actions {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--space-sm);
 }
 
@@ -371,7 +370,7 @@ body {
 
 @media (max-width: 640px) {
   .hero {
-    padding: var(--space-lg);
+    padding: var(--space-sm);
   }
 }
 
@@ -685,7 +684,7 @@ body {
 
 @media (max-width: 640px) {
   .services-card {
-    padding: var(--space-xl);
+    padding: var(--space-sm);
   }
 }
 
@@ -877,7 +876,7 @@ body {
 
 .testimonial-card {
   width: clamp(260px, 54vw, 360px);
-  min-height: 340px;
+  min-height: 280px;
   background: #f9f9f9;
   border-radius: 28px;
   padding: var(--space-md);
@@ -948,6 +947,7 @@ body {
 @media (max-width: 640px) {
   .testimonials-controls {
     justify-content: center;
+    margin-top: var(--space-xs);
   }
 
   .testimonial-card {
@@ -1121,6 +1121,14 @@ body {
 }
 
 @media (max-width: 640px) {
+  .contact-cta {
+    padding: var(--space-sm);
+  }
+  .contact-cta__brand {
+    flex-direction: column;
+    gap: var(--space-xs);
+    justify-content: center;
+  }
   .contact-cta__form-card {
     border-radius: 20px;
     padding: var(--space-sm);
@@ -1132,7 +1140,6 @@ body {
 /* FAQ */
 .faqs {
   padding: var(--space-md) var(--space-sm);
-  margin-block: var(--space-md);
 }
 
 .faqs__inner {
@@ -1240,6 +1247,9 @@ body {
 }
 
 @media (max-width: 640px) {
+  .faqs {
+    padding: var(--space-xs);
+  }
   .faqs__inner {
     align-items: stretch;
   }
