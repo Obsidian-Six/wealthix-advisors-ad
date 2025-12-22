@@ -885,18 +885,21 @@ html::-webkit-scrollbar-thumb:hover {
 
 .covers__item::before {
   content: "✓";
-  inline-size: 28px;
-  block-size: 28px;
+  inline-size: 32px;
+  block-size: 32px;
+  min-inline-size: 32px;
+  min-block-size: 32px;
   border-radius: 50%;
   background: var(--color-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--color-white);
-  font-size: 0.9rem;
+  font-size: 16px;
   font-weight: 700;
   box-shadow: 0 6px 12px #00adef40;
   position: relative;
+  flex-shrink: 0;
 }
 
 .covers__subheading {
@@ -914,6 +917,14 @@ html::-webkit-scrollbar-thumb:hover {
 
   .covers__item {
     padding: var(--space-xs) var(--space-sm);
+  }
+
+  .covers__item::before {
+    inline-size: 24px;
+    block-size: 24px;
+    min-inline-size: 24px;
+    min-block-size: 24px;
+    font-size: 12px;
   }
 }
 
