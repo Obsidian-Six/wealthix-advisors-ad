@@ -1093,9 +1093,9 @@ html::-webkit-scrollbar-thumb:hover {
 
 .contact-cta__inner {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-lg);
-  align-items: center;
+  align-items: stretch;
 }
 
 .contact-cta__details {
@@ -1189,10 +1189,39 @@ html::-webkit-scrollbar-thumb:hover {
   padding: var(--space-md);
   border: 1px solid var(--color-gray-light-30);
   box-shadow: 0 20px 40px #0313262b;
-  max-width: 420px;
   width: 100%;
-  margin-left: auto;
-  justify-self: end;
+}
+
+.contact-cta__form-title {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 3vw, 1.75rem);
+  margin-bottom: var(--space-sm);
+  color: var(--color-text);
+}
+
+.contact-cta__media {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px #0313262b;
+  position: relative;
+  background: var(--color-white-10);
+  min-height: 320px;
+}
+
+.contact-cta__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #00000066 0%, #000000b3 100%);
+  opacity: 0.2;
+}
+
+.contact-cta__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .contact-cta__form {
@@ -1249,7 +1278,22 @@ html::-webkit-scrollbar-thumb:hover {
     border-radius: 20px;
     padding: var(--space-sm);
     justify-self: stretch;
-    margin-left: 0;
+  }
+  .contact-cta__media {
+    min-height: 200px;
+    border-radius: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .contact-cta__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .contact-cta__inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1282,12 +1326,12 @@ body.modal-open {
 .enquiry-modal__dialog {
   position: relative;
   width: min(700px, calc(100% - 2rem));
-  min-height: 500px;
-  height: min(500px, calc(100vh - 2rem));
+  min-height: 570px;
+  height: min(570px, calc(100vh - 2rem));
   max-height: calc(100vh - 2rem);
   border-radius: 28px;
   border: 2px solid var(--color-primary);
-  padding: var(--space-lg);
+  padding: var(--space-md);
   color: var(--color-white);
   box-shadow: 0 35px 65px #03132666;
   overflow: hidden;
@@ -1308,11 +1352,11 @@ body.modal-open {
 .enquiry-modal__content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-sm) 0.35rem var(--space-sm) 0;
-  margin-top: var(--space-sm);
+  padding: var(--space-xs) 0.35rem var(--space-xs) 0;
+  margin-top: var(--space-xs);
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) rgba(255, 255, 255, 0.1);
 }
@@ -1375,20 +1419,21 @@ body.modal-open {
 }
 
 .enquiry-modal__form {
-  margin-top: var(--space-sm);
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 20px;
-  padding: var(--space-md);
-  display: flex;
-  flex-direction: column;
+  margin-top: var(--space-xs);
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-sm);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 25px 55px #03132630;
-  backdrop-filter: blur(8px);
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .enquiry-modal__submit {
   align-self: flex-start;
+  grid-column: 1 / -1;
 }
 
 .enquiry-modal__form .form-field span {
@@ -1421,6 +1466,7 @@ body.modal-open {
   flex-direction: column;
   gap: var(--space-2xs);
   margin-top: var(--space-sm);
+  grid-column: 1 / -1;
 }
 
 .enquiry-modal__divider {
@@ -1475,13 +1521,28 @@ body.modal-open {
     height: min(500px, calc(100vh - 1.5rem));
   }
 
-  .enquiry-modal__form {
-    padding: var(--space-sm);
-  }
-
   .enquiry-modal__contact-links {
     flex-direction: column;
     gap: var(--space-2xs);
+  }
+}
+
+@media (min-width: 768px) {
+  .enquiry-modal__form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-sm);
+    row-gap: var(--space-sm);
+  }
+
+  .enquiry-modal__form .form-field:nth-of-type(1),
+  .enquiry-modal__form .form-field:nth-of-type(2),
+  .enquiry-modal__form .form-field:nth-of-type(3),
+  .enquiry-modal__form .form-field:nth-of-type(4) {
+    grid-column: span 1;
+  }
+
+  .enquiry-modal__form .form-field:nth-of-type(n + 5) {
+    grid-column: 1 / -1;
   }
 }
 
