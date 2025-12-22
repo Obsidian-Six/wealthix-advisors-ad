@@ -216,7 +216,9 @@ html::-webkit-scrollbar-thumb:hover {
   width: auto;
 }
 
-/* Utility Classes */
+/* ============================ */
+/* Utility Buttons & Controls   */
+/* ============================ */
 .btn {
   background-image: radial-gradient(
     50% 78.68% at 50% 100%,
@@ -268,7 +270,9 @@ html::-webkit-scrollbar-thumb:hover {
   box-shadow: 0px 4px 4.7px 0px #45434340;
   outline: none;
 }
-/* Hero */
+/* ============================ */
+/* Hero Layout & Lead Form UI  */
+/* ============================ */
 .hero {
   position: relative;
   margin-top: 0;
@@ -469,7 +473,9 @@ html::-webkit-scrollbar-thumb:hover {
   color: #d92d20;
 }
 
-/* Manage Section */
+/* ============================ */
+/* Manage Section - Brand Story */
+/* ============================ */
 .manage {
 }
 
@@ -515,7 +521,9 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Packages */
+/* ============================ */
+/* Packages w/ Toggle & Cards  */
+/* ============================ */
 .packages-hero {
   position: relative;
   padding: var(--space-2xl) 0;
@@ -688,7 +696,7 @@ html::-webkit-scrollbar-thumb:hover {
 }
 
 .customize-card {
-  width: min(100%, 520px);
+  width: min(100%, 800px);
   border-radius: 18px;
   padding: var(--space-lg);
   background: var(--color-white);
@@ -698,7 +706,7 @@ html::-webkit-scrollbar-thumb:hover {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  text-align: left;
+  text-align: center;
 }
 
 .customize-card__eyebrow {
@@ -722,7 +730,7 @@ html::-webkit-scrollbar-thumb:hover {
 }
 
 .customize-card__cta {
-  align-self: flex-start;
+  align-self: center;
 }
 
 @media (max-width: 640px) {
@@ -731,7 +739,9 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Services */
+/* ============================ */
+/* Services Overview Grid       */
+/* ============================ */
 .services {
   padding: var(--space-md) var(--space-sm);
 }
@@ -804,7 +814,9 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Covers */
+/* ============================ */
+/* Coverage Highlight Panel     */
+/* ============================ */
 .covers {
   position: relative;
   padding: var(--space-md) var(--space-sm);
@@ -900,7 +912,9 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Testimonials */
+/* ============================ */
+/* Testimonials Carousel        */
+/* ============================ */
 .testimonials {
   padding: var(--space-sm) var(--space-sm);
 }
@@ -1071,7 +1085,9 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Contact CTA */
+/* ============================ */
+/* Contact CTA Grid             */
+/* ============================ */
 .contact-cta {
   position: relative;
   padding: var(--space-xl) var(--space-sm);
@@ -1297,7 +1313,9 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Modal */
+/* ============================ */
+/* Global Enquiry Modal         */
+/* ============================ */
 body.modal-open {
   overflow: hidden;
 }
@@ -1546,7 +1564,9 @@ body.modal-open {
   }
 }
 
-/* FAQ */
+/* ============================ */
+/* FAQ Accordion                */
+/* ============================ */
 .faqs {
   padding: var(--space-md) var(--space-sm);
 }

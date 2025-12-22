@@ -1,3 +1,4 @@
+// Hero enquiry form: validates fields, mocks submission, and handles UI feedback
 (() => {
   const form = document.getElementById("hero-enquiry-form");
   if (!form) return;
@@ -102,6 +103,7 @@
   updateButton();
 })();
 
+// FAQ accordion: toggles each card for keyboard + pointer users
 (() => {
   const faqCards = document.querySelectorAll(".faq-card");
   if (!faqCards.length) return;
@@ -124,6 +126,7 @@
   });
 })();
 
+// Packages toggle: swaps between bundled cards and customize CTA
 (() => {
   const toggle = document.querySelector("[data-packages-toggle]");
   const container = document.querySelector(".packages-container");
@@ -159,6 +162,7 @@
   setView("packages");
 })();
 
+// Global enquiry modal: opens from multiple triggers and traps focus
 (() => {
   const modal = document.querySelector("[data-modal]");
   const triggers = document.querySelectorAll("[data-modal-trigger]");
@@ -272,6 +276,7 @@
   });
 })();
 
+// Testimonials carousel: scrolls slides programmatically with nav controls
 (() => {
   const carousel = document.getElementById("testimonial-carousel");
   if (!carousel) return;
