@@ -685,6 +685,102 @@ body {
   }
 }
 
+/* Covers */
+.covers {
+  position: relative;
+  padding: var(--space-2xl) var(--space-sm);
+  margin-block: var(--space-2xl);
+  border-radius: 36px;
+  background: linear-gradient(135deg, #f1fbff 0%, #fdfbff 45%, #eff7ff 100%);
+  overflow: hidden;
+  border: 1px solid var(--color-gray-light-30);
+}
+
+.covers::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 20%, #00adef33 0%, transparent 45%),
+    radial-gradient(circle at 85% 0%, #5ed3ff4d 0%, transparent 40%),
+    radial-gradient(circle at 70% 80%, #00adef26 0%, transparent 35%);
+  opacity: 0.7;
+  z-index: 0;
+}
+
+.covers__content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.covers__heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  color: var(--color-text);
+}
+
+.covers__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-sm);
+}
+
+.covers__item {
+  background: var(--color-white);
+  border-radius: 18px;
+  padding: var(--space-sm) var(--space-md);
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border: 1px solid var(--color-gray-light-30);
+  box-shadow: 0 12px 30px #0b1f3312;
+  position: relative;
+}
+
+.covers__item::before {
+  content: "✓";
+  inline-size: 28px;
+  block-size: 28px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 6px 12px #00adef40;
+  position: relative;
+}
+
+.covers__subheading {
+  font-size: 1rem;
+  color: var(--color-gray-dark);
+  max-width: 52ch;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .covers {
+    border-radius: 24px;
+    padding: var(--space-xl) var(--space-sm);
+  }
+
+  .covers__item {
+    padding: var(--space-xs) var(--space-sm);
+  }
+}
+
 /* Testimonials */
 .testimonials {
   padding: var(--space-2xl) var(--space-sm);
