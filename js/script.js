@@ -1,15 +1,58 @@
-// Hero enquiry form: validates fields, mocks submission, and handles UI feedback
-const alertFormValues = (form) => {
-  if (!form) return;
-  const formData = new FormData(form);
-  const lines = [];
-  formData.forEach((value, key) => {
-    lines.push(`${key}: ${value}`);
-  });
-  const message = lines.length
-    ? `Form values:\n${lines.join("\n")}`
-    : "Form submitted with no fields.";
-  alert(message);
+const GOOGLE_APPS_SCRIPT_URL =
+  window.GOOGLE_APPS_SCRIPT_URL ||
+  window.googleAppsScriptUrl ||
+  "https://script.google.com/macros/s/AKfycbyq4ex8jXo2UECHH10IeLCZ3KZoF6KvGGzmYthbrc58yIkOc3wQLbo8DExvE1EuByT-/exec";
+
+const logFormPayload = (label, payload) => {
+  console.log(`[${label}] submission payload`, payload);
+};
+
+const sendAppsScriptRequest = async (payload) => {
+  if (!GOOGLE_APPS_SCRIPT_URL) {
+    console.warn(
+      "GOOGLE_APPS_SCRIPT_URL is not defined. Payload will not be sent.",
+      payload
+    );
+    return { ok: false, error: new Error("Missing endpoint") };
+  }
+
+  try {
+    await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    return { ok: true };
+  } catch (error) {
+    console.error("Apps Script submission failed", error);
+    return { ok: false, error };
+  }
+};
+
+const sanitizePhoneNumber = (value = "") =>
+  value.toString().replace(/\s+/g, "").replace(/^\+/, "");
+
+const intlTelInstances = new Map();
+
+const getInternationalNumber = (input, fallback = "") => {
+  const defaultValue = sanitizePhoneNumber(fallback);
+  if (!(input instanceof HTMLInputElement)) {
+    return defaultValue;
+  }
+
+  const instance = intlTelInstances.get(input);
+  if (!instance || typeof instance.getNumber !== "function") {
+    return sanitizePhoneNumber(input.value || defaultValue);
+  }
+
+  const utils = window.intlTelInputUtils;
+  const formatted = utils
+    ? instance.getNumber(utils.numberFormat.E164)
+    : instance.getNumber();
+  return sanitizePhoneNumber(formatted || defaultValue);
 };
 
 const initIntlTelInputs = () => {
@@ -20,13 +63,14 @@ const initIntlTelInputs = () => {
 
   inputs.forEach((input) => {
     if (input.dataset.intlInitialized === "true") return;
-    intlTelInput(input, {
+    const instance = intlTelInput(input, {
       initialCountry: "ae",
       loadUtils: () =>
         import(
           "https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/js/utils.js"
         ),
     });
+    intlTelInstances.set(input, instance);
     input.dataset.intlInitialized = "true";
   });
 };
@@ -43,6 +87,7 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
   const iconEl = submitBtn?.querySelector(".btn-icon");
   const errorEl = form.querySelector("[data-form-error]");
   const successEl = form.parentElement?.querySelector("[data-form-success]");
+  const phoneInput = form.querySelector("[name='phone']");
   const defaultLabel = labelEl?.textContent ?? "Submit Your Enquiry";
   let submitting = false;
 
@@ -59,8 +104,7 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
     }, {});
   };
 
-  const isFormValid = () => {
-    const values = getValues();
+  const isFormValid = (values = getValues()) => {
     if (!values.fullName) return false;
     if (!values.phone) return false;
     if (!emailPattern.test(values.email)) return false;
@@ -77,7 +121,6 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
 
   const updateButton = () => {
     if (!submitBtn) return;
-    submitBtn.disabled = submitting || !isFormValid();
     submitBtn.setAttribute("aria-busy", submitting ? "true" : "false");
     if (labelEl) {
       labelEl.textContent = submitting ? "Submitting..." : defaultLabel;
@@ -85,13 +128,7 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
     if (iconEl) {
       iconEl.hidden = submitting;
     }
-  };
-
-  const mockSubmit = (payload) => {
-    // Replace with submitEnquiry helper when backend wiring is available.
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(payload), 1200);
-    });
+    submitBtn.style.cursor = submitting ? "progress" : "";
   };
 
   form.addEventListener("input", () => {
@@ -106,34 +143,40 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!isFormValid()) {
+    const values = getValues();
+    if (!isFormValid(values)) {
       setError("Please complete all required fields with valid details.");
       updateButton();
       return;
     }
 
-    alertFormValues(form);
+    const payload = {
+      source: "Landing_Page_Enquiry",
+      name: values.fullName,
+      mobile: getInternationalNumber(phoneInput, values.phone),
+      email: values.email,
+      service: values.service,
+      message: values.message,
+    };
+    logFormPayload(payload.source, payload);
 
     submitting = true;
     setError("");
     updateButton();
 
     try {
-      await mockSubmit(getValues());
+      await sendAppsScriptRequest(payload);
+    } catch (err) {
+      console.error("Hero form submission failed", err);
+    } finally {
+      submitting = false;
+      updateButton();
+      form.reset();
       form.hidden = true;
       if (successEl) {
         successEl.hidden = false;
         successEl.focus();
       }
-    } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Submission failed. Please try again.";
-      setError(message);
-    } finally {
-      submitting = false;
-      updateButton();
     }
   });
 
@@ -209,9 +252,38 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
   const closeButtons = modal.querySelectorAll("[data-modal-close]");
   const overlay = modal.querySelector("[data-modal-overlay]");
   const firstField = modal.querySelector("#modal-full-name");
+  const modalForm = document.getElementById("modal-enquiry-form");
+  const modalSubmitBtn = modalForm?.querySelector("[data-modal-submit]");
+  const modalSubmitLabel = modalSubmitBtn?.querySelector(
+    "[data-modal-submit-label]"
+  );
+  const modalSubmitIcon = modalSubmitBtn?.querySelector(
+    "[data-modal-submit-icon]"
+  );
+  const modalSubmitDefaultLabel =
+    modalSubmitLabel?.textContent?.trim() || "Book My Consultation";
+  const modalPhoneInput = modalForm?.querySelector("[name='phone']");
+  const modalSuccess = modal.querySelector("[data-modal-success]");
   const focusableSelector =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
   let lastFocusedElement = null;
+
+  const setModalSubmitting = (state) => {
+    if (!modalSubmitBtn) return;
+    modalSubmitBtn.disabled = state;
+    modalSubmitBtn.style.cursor = state ? "progress" : "";
+    modalSubmitBtn.setAttribute("aria-busy", state ? "true" : "false");
+    if (modalSubmitLabel) {
+      modalSubmitLabel.textContent = state
+        ? "Submitting..."
+        : modalSubmitDefaultLabel;
+    }
+    if (modalSubmitIcon) {
+      modalSubmitIcon.hidden = state;
+    }
+  };
+
+  setModalSubmitting(false);
 
   const isVisible = (element) =>
     element instanceof HTMLElement &&
@@ -245,6 +317,14 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
     modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
     setServiceValue(serviceValue ?? "");
+    if (modalForm) {
+      modalForm.hidden = false;
+      modalForm.reset();
+    }
+    if (modalSuccess) {
+      modalSuccess.hidden = true;
+    }
+    setModalSubmitting(false);
     requestAnimationFrame(() => {
       firstField?.focus();
     });
@@ -257,6 +337,13 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
     if (serviceSelect) {
       serviceSelect.value = "";
     }
+    if (modalForm) {
+      modalForm.hidden = false;
+    }
+    if (modalSuccess) {
+      modalSuccess.hidden = true;
+    }
+    setModalSubmitting(false);
     if (lastFocusedElement instanceof HTMLElement) {
       lastFocusedElement.focus();
     }
@@ -283,11 +370,41 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
     }
   });
 
-  const modalForm = document.getElementById("modal-enquiry-form");
-  modalForm?.addEventListener("submit", (event) => {
+  modalForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    alertFormValues(modalForm);
-    closeModal();
+    if (!modalForm.checkValidity()) {
+      modalForm.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(modalForm);
+    const payload = {
+      source: "Landing_Page_Package_Enquiry",
+      name: formData.get("fullName")?.toString().trim() || "",
+      phone: getInternationalNumber(
+        modalPhoneInput,
+        formData.get("phone")?.toString().trim() || ""
+      ),
+      email: formData.get("email")?.toString().trim() || "",
+      service: formData.get("service")?.toString().trim() || "",
+    };
+    logFormPayload(payload.source, payload);
+
+    setModalSubmitting(true);
+
+    try {
+      await sendAppsScriptRequest(payload);
+    } catch (error) {
+      console.error("Modal form submission failed", error);
+    } finally {
+      modalForm.reset();
+      setModalSubmitting(false);
+      if (modalSuccess) {
+        modalForm.hidden = true;
+        modalSuccess.hidden = false;
+        modalSuccess.focus();
+      }
+    }
   });
 
   document.addEventListener("keydown", (event) => {
@@ -346,13 +463,68 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
   });
 })();
 
-// Contact CTA form: basic alert preview before backend wiring
+// Contact CTA form: posts payload to Apps Script and toggles success message
 (() => {
   const contactForm = document.querySelector(".contact-cta__form");
   if (!contactForm) return;
+  const submitBtn = contactForm.querySelector("button[type='submit']");
+  const successMessage = contactForm.querySelector("[data-contact-success]");
+  const contactPhoneInput = contactForm.querySelector("[name='contactPhone']");
+  const defaultSubmitLabel = submitBtn?.textContent?.trim() ?? "Submit Now";
+  let submitting = false;
 
-  contactForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    alertFormValues(contactForm);
+  const updateSubmitState = () => {
+    if (!submitBtn) return;
+    submitBtn.disabled = submitting;
+    submitBtn.style.cursor = submitting ? "progress" : "";
+    submitBtn.setAttribute("aria-busy", submitting ? "true" : "false");
+    submitBtn.textContent = submitting ? "Submitting..." : defaultSubmitLabel;
+  };
+
+  contactForm.addEventListener("input", () => {
+    if (successMessage) {
+      successMessage.hidden = true;
+    }
+    submitting = false;
+    updateSubmitState();
   });
+
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!contactForm.checkValidity()) {
+      contactForm.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(contactForm);
+    const payload = {
+      source: "Landing_Page_Contact",
+      name: formData.get("contactName")?.toString().trim() || "",
+      phone: getInternationalNumber(
+        contactPhoneInput,
+        formData.get("contactPhone")?.toString().trim() || ""
+      ),
+      email: formData.get("contactEmail")?.toString().trim() || "",
+      message: formData.get("contactMessage")?.toString().trim() || "",
+    };
+    logFormPayload(payload.source, payload);
+
+    submitting = true;
+    updateSubmitState();
+
+    try {
+      await sendAppsScriptRequest(payload);
+    } catch (error) {
+      console.error("Contact form submission failed", error);
+    } finally {
+      contactForm.reset();
+      submitting = false;
+      updateSubmitState();
+      if (successMessage) {
+        successMessage.hidden = false;
+      }
+    }
+  });
+
+  updateSubmitState();
 })();

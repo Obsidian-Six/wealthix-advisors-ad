@@ -1251,6 +1251,17 @@ html::-webkit-scrollbar-thumb:hover {
   gap: var(--space-sm);
 }
 
+.contact-cta__feedback {
+  margin-top: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 14px;
+  border: 1px solid rgba(0, 173, 239, 0.35);
+  background: #e8f7ff;
+  color: var(--color-text);
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(0, 173, 239, 0.15);
+}
+
 .contact-field {
   display: flex;
   flex-direction: column;
@@ -1534,6 +1545,18 @@ body.modal-open {
 .enquiry-modal__contact-sep {
   font-size: 0.85rem;
   color: var(--color-gray-dark);
+}
+
+.enquiry-modal__feedback {
+  grid-column: 1 / -1;
+  margin-top: var(--space-xs);
+  padding: var(--space-sm);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  text-align: center;
+  font-weight: 600;
 }
 
 @media (max-width: 640px) {
