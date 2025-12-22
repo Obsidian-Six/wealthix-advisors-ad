@@ -330,6 +330,7 @@ html::-webkit-scrollbar-thumb:hover {
 .hero-actions {
   display: flex;
   gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
 }
 
 .hero-whatsapp-link {
