@@ -103,20 +103,19 @@
             </p>
           </div>
           <form id="hero-enquiry-form" class="hero-form__fields" novalidate>
-            <label class="form-field" for="hero-full-name">
-              <span>Full Name</span>
+            <div class="form-field">
               <input
                 type="text"
                 id="hero-full-name"
                 name="fullName"
                 placeholder="Enter Your Name"
                 autocomplete="name"
+                aria-label="Full Name"
                 required
               />
-            </label>
+            </div>
 
-            <label class="form-field" for="hero-phone">
-              <span>Mobile Number</span>
+            <div class="form-field">
               <input
                 type="tel"
                 id="hero-phone"
@@ -125,25 +124,30 @@
                 autocomplete="tel"
                 inputmode="tel"
                 data-intl-phone
+                aria-label="Mobile Number"
                 required
               />
-            </label>
+            </div>
 
-            <label class="form-field" for="hero-email">
-              <span>Email</span>
+            <div class="form-field">
               <input
                 type="email"
                 id="hero-email"
                 name="email"
                 placeholder="Enter Your Email"
                 autocomplete="email"
+                aria-label="Email"
                 required
               />
-            </label>
+            </div>
 
-            <label class="form-field" for="hero-service">
-              <span>Service</span>
-              <select id="hero-service" name="service" required>
+            <div class="form-field">
+              <select
+                id="hero-service"
+                name="service"
+                aria-label="Service"
+                required
+              >
                 <option value="">Choose Your Service</option>
                 <option value="tax">Tax Advisory</option>
                 <option value="vat">VAT Services</option>
@@ -151,18 +155,18 @@
                 <option value="compliance">Compliance</option>
                 <option value="others">Others</option>
               </select>
-            </label>
+            </div>
 
-            <label class="form-field" for="hero-message">
-              <span>Your Message</span>
+            <div class="form-field">
               <textarea
                 id="hero-message"
                 name="message"
                 rows="3"
                 placeholder="Tell us about your requirements"
+                aria-label="Your Message"
                 required
               ></textarea>
-            </label>
+            </div>
 
             <button
               type="submit"
@@ -1401,20 +1405,19 @@
             business day.
           </p>
           <form class="enquiry-modal__form" id="modal-enquiry-form" novalidate>
-            <label class="form-field" for="modal-full-name">
-              <span>Full Name</span>
+            <div class="form-field">
               <input
                 type="text"
                 id="modal-full-name"
                 name="fullName"
                 placeholder="Enter Your Full Name"
                 autocomplete="name"
+                aria-label="Full Name"
                 required
               />
-            </label>
+            </div>
 
-            <label class="form-field" for="modal-phone">
-              <span>Phone</span>
+            <div class="form-field">
               <input
                 type="tel"
                 id="modal-phone"
@@ -1423,28 +1426,29 @@
                 autocomplete="tel"
                 inputmode="tel"
                 data-intl-phone
+                aria-label="Phone"
                 required
               />
-            </label>
+            </div>
 
-            <label class="form-field" for="modal-email">
-              <span>Email</span>
+            <div class="form-field">
               <input
                 type="email"
                 id="modal-email"
                 name="email"
                 placeholder="Enter Your Email"
                 autocomplete="email"
+                aria-label="Email"
                 required
               />
-            </label>
+            </div>
 
-            <label class="form-field" for="modal-service">
-              <span>Service</span>
+            <div class="form-field">
               <select
                 id="modal-service"
                 name="service"
                 data-modal-service
+                aria-label="Service"
                 required
               >
                 <option value="">Choose Your Service</option>
@@ -1458,7 +1462,7 @@
                 <option value="compliance">Compliance</option>
                 <option value="others">Others</option>
               </select>
-            </label>
+            </div>
 
             <button
               type="submit"
