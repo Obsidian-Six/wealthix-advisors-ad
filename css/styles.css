@@ -873,33 +873,32 @@ html::-webkit-scrollbar-thumb:hover {
   padding: var(--space-sm) var(--space-md);
   font-weight: 600;
   color: var(--color-text);
+  width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   gap: var(--space-sm);
   border: 1px solid var(--color-gray-light-30);
   box-shadow: 0 12px 30px #0b1f3312;
-  position: relative;
   text-align: left;
 }
 
-.covers__item::before {
+.covers__item-icon {
   content: "✓";
-  inline-size: 32px;
-  block-size: 32px;
-  min-inline-size: 32px;
-  min-block-size: 32px;
+  height: 32px;
+  width: 32px;
   border-radius: 50%;
   background: var(--color-primary);
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-white);
   font-size: 16px;
   font-weight: 700;
   box-shadow: 0 6px 12px #00adef40;
-  position: relative;
-  flex-shrink: 0;
-  margin: auto;
+}
+.covers__item-text {
+  width: 100%;
 }
 
 .covers__subheading {
