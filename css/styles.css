@@ -874,11 +874,12 @@ html::-webkit-scrollbar-thumb:hover {
   font-weight: 600;
   color: var(--color-text);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-sm);
   border: 1px solid var(--color-gray-light-30);
   box-shadow: 0 12px 30px #0b1f3312;
   position: relative;
+  text-align: left;
 }
 
 .covers__item::before {
@@ -898,6 +899,7 @@ html::-webkit-scrollbar-thumb:hover {
   box-shadow: 0 6px 12px #00adef40;
   position: relative;
   flex-shrink: 0;
+  margin: auto;
 }
 
 .covers__subheading {
