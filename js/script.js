@@ -245,8 +245,7 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
 // Global enquiry modal: opens from multiple triggers and traps focus
 (() => {
   const modal = document.querySelector("[data-modal]");
-  const triggers = document.querySelectorAll("[data-modal-trigger]");
-  if (!modal || !triggers.length) return;
+  if (!modal) return;
 
   const serviceSelect = modal.querySelector("[data-modal-service]");
   const closeButtons = modal.querySelectorAll("[data-modal-close]");
@@ -349,11 +348,11 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
     }
   };
 
-  triggers.forEach((trigger) => {
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
-      openModal(trigger.getAttribute("data-service"));
-    });
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest("[data-modal-trigger]");
+    if (!trigger) return;
+    event.preventDefault();
+    openModal(trigger.getAttribute("data-service"));
   });
 
   closeButtons.forEach((button) => {

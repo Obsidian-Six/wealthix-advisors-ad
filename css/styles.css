@@ -487,6 +487,7 @@ html::-webkit-scrollbar-thumb:hover {
 .manage-content {
   max-width: 800px;
   margin: var(--space-xl) auto;
+  text-align: center;
 }
 
 .manage-title {
@@ -500,10 +501,7 @@ html::-webkit-scrollbar-thumb:hover {
 
 .manage p + p {
   margin-top: var(--space-sm);
-}
-
-.manage-spacer {
-  min-height: var(--hero-form-overlap);
+  margin-bottom: var(--space-sm);
 }
 
 @media (max-width: 1023px) {
@@ -776,7 +774,7 @@ html::-webkit-scrollbar-thumb:hover {
 .services-subtext {
   color: var(--color-gray-dark);
   max-width: 60ch;
-  margin: var(--space-sm) auto 0;
+  margin: var(--space-sm) auto;
 }
 
 .services-grid {
@@ -906,6 +904,9 @@ html::-webkit-scrollbar-thumb:hover {
   font-size: 1rem;
   color: var(--color-gray-dark);
   max-width: 52ch;
+  margin: 0 auto;
+}
+.covers .popup-btn {
   margin: 0 auto;
 }
 
