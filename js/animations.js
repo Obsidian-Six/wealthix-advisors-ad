@@ -10,7 +10,7 @@
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
       elements.forEach((el) => el.classList.add("is-visible"));
       return;
     }
