@@ -266,6 +266,15 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
   const focusableSelector =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
   let lastFocusedElement = null;
+  const AUTO_MODAL_DELAY = 5000;
+  let autoPopupTimer = null;
+  let autoPopupTriggered = false;
+
+  const clearAutoPopupTimer = () => {
+    if (!autoPopupTimer) return;
+    clearTimeout(autoPopupTimer);
+    autoPopupTimer = null;
+  };
 
   const setModalSubmitting = (state) => {
     if (!modalSubmitBtn) return;
@@ -311,6 +320,8 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
   };
 
   const openModal = (serviceValue) => {
+    autoPopupTriggered = true;
+    clearAutoPopupTimer();
     lastFocusedElement = document.activeElement;
     modal.hidden = false;
     modal.setAttribute("aria-hidden", "false");
@@ -346,6 +357,16 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
     if (lastFocusedElement instanceof HTMLElement) {
       lastFocusedElement.focus();
     }
+  };
+
+  const scheduleAutoPopup = () => {
+    if (autoPopupTriggered) return;
+    clearAutoPopupTimer();
+    autoPopupTimer = window.setTimeout(() => {
+      autoPopupTimer = null;
+      if (autoPopupTriggered || !modal.hidden) return;
+      openModal();
+    }, AUTO_MODAL_DELAY);
   };
 
   document.addEventListener("click", (event) => {
@@ -428,6 +449,8 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
       }
     }
   });
+
+  scheduleAutoPopup();
 })();
 
 // Testimonials carousel: scrolls slides programmatically with nav controls
