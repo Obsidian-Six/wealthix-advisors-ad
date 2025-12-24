@@ -14,6 +14,7 @@
       href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/css/intlTelInput.css"
     />
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/animations.css" />
   </head>
   <body>
     <!-- Global Header & Navigation -->
@@ -26,7 +27,7 @@
     </header>
     <!-- Hero Section: Primary positioning + lead form -->
     <section class="hero container">
-      <div class="hero-content">
+      <div class="hero-content animate-on-scroll" data-animate="fade-up">
         <h1 class="hero-title">
           Trusted Accounting & Tax Services in Dubai Stress-Free Finances.
           Smarter Decisions.
@@ -78,7 +79,7 @@
           />
         </div>
       </div>
-      <div class="hero-form">
+      <div class="hero-form animate-on-scroll" data-animate="fade-left">
         <div class="hero-form__card">
           <p class="hero-form__eyebrow">Get expert guidance</p>
           <h2 class="hero-form__title">Submit Your Service Enquiry</h2>
@@ -191,7 +192,7 @@
     </section>
     <!-- Brand Story / Value Proposition -->
     <section class="manage container" id="manage">
-      <div class="manage-content">
+      <div class="manage-content animate-on-scroll" data-animate="fade-up">
         <h2 class="manage-title">
           We manage your books, so you can grow your Business!
         </h2>
@@ -222,7 +223,10 @@
     </section>
     <!-- Packages Section with toggle + customize CTA -->
     <section class="packages-hero" id="packages">
-      <div class="container packages-hero__inner">
+      <div
+        class="container packages-hero__inner animate-on-scroll"
+        data-animate="fade-up"
+      >
         <h2>Tax &amp; Accounting <span>Packages</span></h2>
         <p class="packages-hero__inner-text">
           Flexible plans for every business size and activity level. Select the
@@ -519,7 +523,10 @@
     </section>
     <!-- Services Overview Grid -->
     <section class="services" id="services">
-      <div class="container services-card">
+      <div
+        class="container services-card animate-on-scroll"
+        data-animate="fade-up"
+      >
         <p class="services-eyebrow">
           Corporate Tax, Accounting, and VAT Made Simple
         </p>
@@ -626,7 +633,7 @@
       aria-label="What our accounting coverage includes"
     >
       <div class="container">
-        <div class="covers__content">
+        <div class="covers__content animate-on-scroll" data-animate="fade-up">
           <h2 class="covers__heading">
             Our Accounting &amp; Bookkeeping Covers
           </h2>
@@ -710,7 +717,10 @@
       id="testimonials"
       aria-label="Client testimonials"
     >
-      <div class="container testimonials__inner">
+      <div
+        class="container testimonials__inner animate-on-scroll"
+        data-animate="fade-up"
+      >
         <div>
           <p class="testimonials-eyebrow">You&apos;re in good company</p>
           <h2 class="testimonials-title">
@@ -1056,7 +1066,10 @@
       aria-label="Strategic partners and technology platforms"
     >
       <div class="container partners__inner">
-        <div class="partners__intro">
+        <div
+          class="partners__intro animate-on-scroll"
+          data-animate="fade-right"
+        >
           <p class="partners__eyebrow">Strategic Alliances</p>
           <h2 class="partners__title">
             Trusted by UAE free zones, SaaS platforms, and growth hubs
@@ -1067,7 +1080,11 @@
             sync from day one.
           </p>
         </div>
-        <div class="partners__grid" aria-label="Partner logos">
+        <div
+          class="partners__grid animate-on-scroll"
+          data-animate="fade-left"
+          aria-label="Partner logos"
+        >
           <div class="partners__logo-card">
             <img
               src="images/partners/dubai-south.png"
@@ -1116,7 +1133,10 @@
 
     <!-- FAQ Accordion -->
     <section class="faqs" id="faqs">
-      <div class="container faqs__inner">
+      <div
+        class="container faqs__inner animate-on-scroll"
+        data-animate="fade-up"
+      >
         <p class="faqs-eyebrow">Answers For Every Stage</p>
         <h2 class="faqs-title">Frequently Asked Questions</h2>
         <p class="faqs-copy">
@@ -1318,7 +1338,10 @@
 
     <!-- Contact CTA Grid -->
     <section class="contact-cta" id="contact" aria-label="Quick contact">
-      <div class="container contact-cta__inner">
+      <div
+        class="container contact-cta__inner animate-on-scroll"
+        data-animate="fade-up"
+      >
         <div class="contact-cta__details">
           <div class="contact-cta__brand">
             <img
@@ -1609,6 +1632,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.14.0/build/js/intlTelInput.min.js"></script>
+    <script src="js/animations.js" defer></script>
     <script src="js/script.js" defer></script>
   </body>
 </html>
