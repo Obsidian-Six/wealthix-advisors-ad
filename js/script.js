@@ -7,6 +7,15 @@ const logFormPayload = (label, payload) => {
   console.log(`[${label}] submission payload`, payload);
 };
 
+const trackLeadConversion = () => {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", "conversion", {
+    send_to: "AW-17809995237/BXUcCOWG1dYbEOXru6xC",
+    value: 1.0,
+    currency: "AED",
+  });
+};
+
 const sendAppsScriptRequest = async (payload) => {
   if (!GOOGLE_APPS_SCRIPT_URL) {
     console.warn(
@@ -177,6 +186,7 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
         successEl.hidden = false;
         successEl.focus();
       }
+      trackLeadConversion();
     }
   });
 
@@ -424,6 +434,7 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
         modalSuccess.hidden = false;
         modalSuccess.focus();
       }
+      trackLeadConversion();
     }
   });
 
@@ -545,6 +556,7 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
       if (successMessage) {
         successMessage.hidden = false;
       }
+      trackLeadConversion();
     }
   });
 

@@ -117,6 +117,10 @@
   --text-sm: 16px;
   --text-sm--line-height: 100%;
   --text-sm--letter-spacing: 0;
+
+  --text-xs: 12px;
+  --text-xs--line-height: 100%;
+  --text-xs--letter-spacing: 0;
 }
 
 /* Reset */
@@ -1484,8 +1488,7 @@ body.modal-open {
 .enquiry-modal__dialog {
   position: relative;
   width: min(700px, calc(100% - 2rem));
-  min-height: 570px;
-  height: min(570px, calc(100vh - 2rem));
+  height: min(fit-content, calc(100vh - 2rem));
   max-height: calc(100vh - 2rem);
   border-radius: 28px;
   border: 2px solid var(--color-primary);
@@ -1618,28 +1621,6 @@ body.modal-open {
   box-shadow: 0 0 0 2px rgba(0, 173, 239, 0.35);
 }
 
-.enquiry-modal__contact-cta {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2xs);
-  margin-top: var(--space-sm);
-  grid-column: 1 / -1;
-}
-
-.enquiry-modal__divider {
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: var(--color-gray-light-30);
-}
-
-.enquiry-modal__contact-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-gray-dark);
-  margin: 0;
-}
 .consultation-flyout {
   position: fixed;
   bottom: 1.25rem;
@@ -1746,6 +1727,17 @@ body.modal-open {
   .consultation-flyout__contact {
     flex: 1;
     justify-content: center;
+  }
+}
+@media (max-width: 560px) {
+  .consultation-flyout {
+    left: 0;
+    right: 0;
+    width: 100vw;
+    padding: 0.75rem 1rem;
+  }
+  .consultation-flyout__contact {
+    font-size: var(--text-xs);
   }
 }
 
