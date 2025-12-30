@@ -345,14 +345,6 @@ html::-webkit-scrollbar-thumb:hover {
   margin-bottom: var(--space-sm);
 }
 
-.hero-whatsapp-link {
-  transition: transform 300ms ease;
-}
-
-.hero-whatsapp-link:hover {
-  scale: 1.1;
-}
-
 .hero-form {
   width: 100%;
   align-self: stretch;
@@ -1645,46 +1637,16 @@ body.modal-open {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.95rem;
+  font-size: var(--text-sm);
 }
 
 .consultation-flyout__section--label {
   font-weight: 600;
-  letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.consultation-flyout__section--contacts {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
 }
 
 .consultation-flyout__label {
   white-space: nowrap;
-}
-
-.consultation-flyout__contact {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: inherit;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 200ms ease, transform 200ms ease;
-}
-
-.consultation-flyout__contact:hover,
-.consultation-flyout__contact:focus-visible {
-  color: #21c4ff;
-  transform: translateY(-1px);
-  outline: none;
-}
-
-.consultation-flyout__divider {
-  width: 1px;
-  align-self: stretch;
-  background: rgba(255, 255, 255, 0.35);
 }
 
 .consultation-flyout__cta {
@@ -1709,25 +1671,6 @@ body.modal-open {
     padding: 0.85rem 1.25rem;
     gap: 0.5rem;
   }
-
-  .consultation-flyout__section--label,
-  .consultation-flyout__cta,
-  .consultation-flyout__divider {
-    display: none;
-  }
-
-  .consultation-flyout__section--contacts {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 0.75rem;
-  }
-
-  .consultation-flyout__contact {
-    flex: 1;
-    justify-content: center;
-  }
 }
 @media (max-width: 560px) {
   .consultation-flyout {
@@ -1736,7 +1679,11 @@ body.modal-open {
     width: 100vw;
     padding: 0.75rem 1rem;
   }
-  .consultation-flyout__contact {
+  .consultation-flyout__section {
+    font-size: var(--text-xs);
+  }
+  .consultation-flyout__cta {
+    padding-inline: 1rem;
     font-size: var(--text-xs);
   }
 }
