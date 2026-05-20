@@ -1848,27 +1848,31 @@ body.modal-open {
   transform: translateX(-50%);
   z-index: 1000;
   color: var(--color-white);
+  text-decoration: none;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 32px;
-  background: var(--color-primary-dark-60);
-  color: var(--color-white);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 25px 60px rgba(3, 19, 38, 0.4);
+  background: #25D366; /* WhatsApp green */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 15px 40px rgba(37, 211, 102, 0.35);
   padding: 0.75em 2em 0.75em 1.5em;
   display: flex;
   align-items: center;
   gap: 0.5em;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .start-now-float:hover,
 .start-now-float:focus-visible {
-  background: var(--color-primary-dark-80);
+  background: #128C7E; /* Deep WhatsApp green */
+  box-shadow: 0 20px 45px rgba(18, 140, 126, 0.45);
+  transform: translateX(-50%) scale(1.05);
 }
-.start-now-float .material-symbols-outlined {
-  font-size: 1.5em;
+.start-now-float .whatsapp-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 @media (max-width: 767px) {
   .start-now-float {
@@ -1878,6 +1882,10 @@ body.modal-open {
     font-size: 1rem;
     padding: 0.65em 1.5em 0.65em 1em;
   }
+  .start-now-float:hover,
+  .start-now-float:focus-visible {
+    transform: translateX(-50%) scale(1.05);
+  }
 }
 @media (max-width: 560px) {
   .start-now-float {
@@ -1886,6 +1894,11 @@ body.modal-open {
     transform: translateX(-50%);
     font-size: 0.95rem;
     padding: 0.5em 1em 0.5em 0.8em;
-    width: 225px;
+    width: max-content;
+    max-width: calc(100% - 16px);
+  }
+  .start-now-float:hover,
+  .start-now-float:focus-visible {
+    transform: translateX(-50%) scale(1.05);
   }
 }

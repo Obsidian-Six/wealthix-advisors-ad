@@ -607,3 +607,15 @@ document.addEventListener("DOMContentLoaded", initIntlTelInputs);
 
   updateSubmitState();
 })();
+
+// Track clicks on the floating WhatsApp consultation button
+(() => {
+  const waFloatBtn = document.getElementById("whatsapp-float-btn");
+  if (waFloatBtn) {
+    waFloatBtn.addEventListener("click", () => {
+      if (typeof trackLeadConversion === "function") {
+        trackLeadConversion();
+      }
+    });
+  }
+})();
