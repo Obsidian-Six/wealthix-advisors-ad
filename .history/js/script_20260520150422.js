@@ -129,34 +129,19 @@ const initIntlTelInputs = () => {
         document.querySelectorAll('.iti__country-list input[type="search"], .iti__country-list .iti__search, .iti__country-list .iti__searchbox').forEach(el => {
           try { el.style.backgroundImage = 'none'; } catch (e) {}
         });
-      // force-remove or clear any search input/icon nodes if present for inconsistent plugin markup
+      // force-remove any search input/icon nodes if present for inconsistent plugin markup
       const removeCountryListSearch = (rootEl) => {
         try {
           const root = rootEl || document.body;
           const lists = root.querySelectorAll('.iti__country-list');
           lists.forEach(list => {
-            // find inputs (search) and aggressively clear placeholder/value and then remove
-            const inputs = Array.from(list.querySelectorAll('input[type="search"], input, .iti__search, .iti__searchbox'));
-            inputs.forEach(s => {
-              try {
-                // clear placeholder and value first
-                if (s instanceof HTMLInputElement) {
-                  s.placeholder = '';
-                  s.removeAttribute('placeholder');
-                  s.value = '';
-                  s.removeAttribute('aria-label');
-                  s.setAttribute('aria-hidden', 'true');
-                  s.tabIndex = -1;
-                  s.style.display = 'none';
-                  // attempt removal
-                  if (s.parentElement) s.remove();
-                } else if (s && s.style) {
-                  s.style.display = 'none';
-                  s.remove();
-                }
-              } catch (e) {}
-            });
-
+            // remove input[type=search]
+            const s = list.querySelector('input[type="search"], .iti__search, .iti__searchbox');
+            if (s && s.parentElement) {
+              // hide first to avoid layout shift, then remove
+              s.style.display = 'none';
+              s.remove();
+            }
             // remove any svg or icon nodes inside the list that look like magnifiers
             list.querySelectorAll('svg, .icon, [class*="search"], [class*="magnifier"]').forEach(ic => {
               try { ic.style.display = 'none'; ic.remove(); } catch (e) {}

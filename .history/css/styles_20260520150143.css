@@ -486,32 +486,6 @@ input.no-search-icon {
   background-image: none !important;
 }
 
-/* Extra aggressive targets for vendor/browser-specific search icons or
-   plugin variations. These rules hide pseudo-elements and common search
-   icon classes inside the country list. */
-.iti__country-list input,
-.iti__country-list input[type="search"] {
-  background: transparent !important;
-  background-image: none !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
-}
-.iti__country-list input::before,
-.iti__country-list input::after,
-.iti__country-list input::-webkit-search-decoration,
-.iti__country-list input::-webkit-search-cancel-button,
-.iti__country-list input::-ms-clear,
-.iti__country-list input::-ms-reveal {
-  content: none !important;
-  display: none !important;
-  background-image: none !important;
-}
-.iti__country-list [class*="search"],
-.iti__country-list [class*="search"] *,
-.iti__country-list svg {
-  display: none !important;
-}
-
 .hero-form {
   width: 100%;
   align-self: stretch;

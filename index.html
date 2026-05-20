@@ -56,24 +56,26 @@
           UAE Corporate Tax &amp; Accounting Experts
           <span>Quick. Accurate. FTA-compliant.</span>
         </h1>
-        <ul class="hero-list animate-on-scroll" data-animate="fade-up">
-          <li class="hero-list-item">
-            <span class="hero-list-icon" aria-hidden="true">✅</span>
-            Corporate Tax Filing
-          </li>
-          <li class="hero-list-item">
-            <span class="hero-list-icon" aria-hidden="true">✅</span>
-            VAT Registration &amp; Returns
-          </li>
-          <li class="hero-list-item">
-            <span class="hero-list-icon" aria-hidden="true">✅</span>
-            Monthly Bookkeeping
-          </li>
-          <li class="hero-list-item">
-            <span class="hero-list-icon" aria-hidden="true">✅</span>
-            Accounting Setup
-          </li>
-        </ul>
+        <div class="hero-features animate-on-scroll" data-animate="fade-up">
+          <ul class="hero-features-grid" aria-hidden="false">
+            <li class="hero-features-grid__item">
+              <span class="hero-list-icon material-symbols-outlined" aria-hidden="true">done</span>
+              Corporate Tax Filing
+            </li>
+            <li class="hero-features-grid__item">
+              <span class="hero-list-icon material-symbols-outlined" aria-hidden="true">done</span>
+              VAT Registration &amp; Returns
+            </li>
+            <li class="hero-features-grid__item">
+              <span class="hero-list-icon material-symbols-outlined" aria-hidden="true">done</span>
+              Monthly Bookkeeping
+            </li>
+            <li class="hero-features-grid__item">
+              <span class="hero-list-icon material-symbols-outlined" aria-hidden="true">done</span>
+              Accounting Setup
+            </li>
+          </ul>
+        </div>
         <div class="hero-actions">
           <button
             type="button"
@@ -137,6 +139,7 @@
                 autocomplete="name"
                 aria-label="Full Name"
                 required
+                maxlength="80"
               />
             </div>
 
@@ -151,6 +154,7 @@
                 data-intl-phone
                 aria-label="Mobile Number"
                 required
+                maxlength="13"
               />
             </div>
 
@@ -163,6 +167,7 @@
                 autocomplete="email"
                 aria-label="Email"
                 required
+                maxlength="254"
               />
             </div>
 
@@ -190,6 +195,7 @@
                 placeholder="Tell us about your requirements"
                 aria-label="Your Message"
                 required
+                maxlength="1000"
               ></textarea>
             </div>
 
@@ -217,6 +223,7 @@
         </div>
       </div>
     </section>
+    
     <!-- Brand Story / Value Proposition -->
     <section class="manage container" id="manage">
       <div class="manage-content">
@@ -1149,107 +1156,6 @@
       </div>
     </section>
 
-    <!-- Partners Showcase -->
-    <section
-      class="partners"
-      id="partners"
-      aria-label="Strategic partners and technology platforms"
-    >
-      <div class="container partners__inner">
-        <div class="partners__intro">
-          <p
-            class="partners__eyebrow animate-on-scroll"
-            data-animate="fade-right"
-          >
-            Strategic Alliances
-          </p>
-          <h2
-            class="partners__title animate-on-scroll"
-            data-animate="fade-right"
-            data-animate-delay="100ms"
-          >
-            Trusted by UAE free zones, SaaS platforms, and growth hubs
-          </h2>
-          <p
-            class="partners__copy animate-on-scroll"
-            data-animate="fade-right"
-            data-animate-delay="200ms"
-          >
-            We work hand-in-hand with leading economic zones and digital stacks
-            so your compliance, reporting, and software implementation stay in
-            sync from day one.
-          </p>
-        </div>
-        <div class="partners__grid" aria-label="Partner logos">
-          <div
-            class="partners__logo-card animate-on-scroll"
-            data-animate="fade-left"
-          >
-            <img
-              src="images/partners/dubai-south.png"
-              alt="Dubai South"
-              loading="lazy"
-            />
-          </div>
-          <div
-            class="partners__logo-card animate-on-scroll"
-            data-animate="fade-left"
-            data-animate-delay="80ms"
-          >
-            <img
-              src="images/partners/ifza.jpeg"
-              alt="IFZA Dubai"
-              loading="lazy"
-            />
-          </div>
-          <div
-            class="partners__logo-card animate-on-scroll"
-            data-animate="fade-left"
-            data-animate-delay="140ms"
-          >
-            <img
-              src="images/partners/maydan.png"
-              alt="Meydan Free Zone"
-              loading="lazy"
-            />
-          </div>
-          <div
-            class="partners__logo-card animate-on-scroll"
-            data-animate="fade-left"
-            data-animate-delay="200ms"
-          >
-            <img
-              src="images/partners/rakez.jpeg"
-              alt="RAKEZ Free Zone"
-              loading="lazy"
-            />
-          </div>
-          <div
-            class="partners__logo-card animate-on-scroll"
-            data-animate="fade-left"
-            data-animate-delay="260ms"
-          >
-            <img
-              src="images/partners/oodo.png"
-              alt="Odoo Accounting"
-              loading="lazy"
-            />
-          </div>
-          <div
-            class="partners__logo-card animate-on-scroll"
-            data-animate="fade-left"
-            data-animate-delay="320ms"
-          >
-            <img
-              src="images/partners/zoho.png"
-              alt="Zoho Books"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- FAQ Accordion -->
     <section class="faqs" id="faqs">
       <div class="container faqs__inner">
@@ -1582,6 +1488,7 @@
                 aria-label="Full Name"
                 autocomplete="name"
                 required
+                maxlength="80"
               />
             </div>
             <div class="contact-field">
@@ -1595,6 +1502,7 @@
                 inputmode="tel"
                 data-intl-phone
                 required
+                maxlength="13"
               />
             </div>
             <div class="contact-field">
@@ -1605,6 +1513,7 @@
                 aria-label="Email Address"
                 autocomplete="email"
                 required
+                maxlength="254"
               />
             </div>
             <div class="contact-field">
@@ -1614,6 +1523,7 @@
                 placeholder="Message"
                 aria-label="Message"
                 required
+                maxlength="1000"
               ></textarea>
             </div>
             <button type="submit" class="btn contact-cta__submit">

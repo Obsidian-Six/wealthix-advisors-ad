@@ -126,107 +126,14 @@ const initIntlTelInputs = () => {
       // mark the phone input too so its background/search decoration is removed
       try { input.classList.add('no-search-icon'); } catch (e) {}
       // also clear any background-image on any search inputs in country lists
-        document.querySelectorAll('.iti__country-list input[type="search"], .iti__country-list .iti__search, .iti__country-list .iti__searchbox').forEach(el => {
-          try { el.style.backgroundImage = 'none'; } catch (e) {}
-        });
-      // force-remove or clear any search input/icon nodes if present for inconsistent plugin markup
-      const removeCountryListSearch = (rootEl) => {
-        try {
-          const root = rootEl || document.body;
-          const lists = root.querySelectorAll('.iti__country-list');
-          lists.forEach(list => {
-            // find inputs (search) and aggressively clear placeholder/value and then remove
-            const inputs = Array.from(list.querySelectorAll('input[type="search"], input, .iti__search, .iti__searchbox'));
-            inputs.forEach(s => {
-              try {
-                // clear placeholder and value first
-                if (s instanceof HTMLInputElement) {
-                  s.placeholder = '';
-                  s.removeAttribute('placeholder');
-                  s.value = '';
-                  s.removeAttribute('aria-label');
-                  s.setAttribute('aria-hidden', 'true');
-                  s.tabIndex = -1;
-                  s.style.display = 'none';
-                  // attempt removal
-                  if (s.parentElement) s.remove();
-                } else if (s && s.style) {
-                  s.style.display = 'none';
-                  s.remove();
-                }
-              } catch (e) {}
-            });
-
-            // remove any svg or icon nodes inside the list that look like magnifiers
-            list.querySelectorAll('svg, .icon, [class*="search"], [class*="magnifier"]').forEach(ic => {
-              try { ic.style.display = 'none'; ic.remove(); } catch (e) {}
-            });
-          });
-        } catch (e) {
-          // ignore
-        }
-      };
-      removeCountryListSearch(itiRoot || document.body);
+      document.querySelectorAll('.iti__country-list input[type="search"], .iti__country-list .iti__search, .iti__country-list .iti__searchbox').forEach(el => {
+        try { el.style.backgroundImage = 'none'; } catch (e) {}
+      });
     };
 
-    selectedFlag?.addEventListener('click', () => {
-      // plugin often creates the country list after click; run cleanup shortly after
-      hideSearchIcon();
-      setTimeout(hideSearchIcon, 120);
-      // also attempt a stronger removal after dropdown is added
-      setTimeout(() => {
-        try {
-          const list = document.querySelector('.iti__country-list');
-          if (list) {
-            // remove search input + icons
-            const s = list.querySelector('input[type="search"], .iti__search, .iti__searchbox');
-            if (s) { s.style.display = 'none'; s.remove(); }
-            list.querySelectorAll('svg, .icon, [class*="search"], [class*="magnifier"]').forEach(ic => { try { ic.style.display = 'none'; ic.remove(); } catch(e){} });
-          }
-        } catch (e) {}
-      }, 220);
-    });
+    selectedFlag?.addEventListener('click', hideSearchIcon);
     // intl-tel-input dispatches a `countrychange` event on the input when selection changes
-    input.addEventListener('countrychange', () => {
-      hideSearchIcon();
-      setTimeout(hideSearchIcon, 120);
-      setTimeout(() => {
-        try {
-          const list = document.querySelector('.iti__country-list');
-          if (list) {
-            const s = list.querySelector('input[type="search"], .iti__search, .iti__searchbox');
-            if (s) { s.style.display = 'none'; s.remove(); }
-            list.querySelectorAll('svg, .icon, [class*="search"], [class*="magnifier"]').forEach(ic => { try { ic.style.display = 'none'; ic.remove(); } catch(e){} });
-          }
-        } catch (e) {}
-      }, 220);
-    });
-
-    // MutationObserver: if plugin injects the country list later, remove its search field/icons
-    try {
-      const mo = new MutationObserver((muts) => {
-        muts.forEach(m => {
-          m.addedNodes && m.addedNodes.forEach(node => {
-            if (!(node instanceof HTMLElement)) return;
-            if (node.classList && node.classList.contains('iti__country-list')) {
-              // remove search input/icon immediately and again shortly after
-              try {
-                const s = node.querySelector('input[type="search"], .iti__search, .iti__searchbox');
-                if (s) { s.style.display = 'none'; s.remove(); }
-                node.querySelectorAll('svg, .icon, [class*="search"], [class*="magnifier"]').forEach(ic => { try { ic.style.display = 'none'; ic.remove(); } catch(e){} });
-              } catch (e) {}
-              setTimeout(() => {
-                try {
-                  const s2 = node.querySelector('input[type="search"], .iti__search, .iti__searchbox');
-                  if (s2) { s2.style.display = 'none'; s2.remove(); }
-                } catch (e) {}
-              }, 180);
-            }
-          });
-        });
-      });
-      mo.observe(document.body, { childList: true, subtree: true });
-    } catch (e) {}
+    input.addEventListener('countrychange', hideSearchIcon);
   });
 };
 
