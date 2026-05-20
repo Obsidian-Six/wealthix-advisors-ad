@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:wdth,wght@75..100,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:wdth,wght@75..100,100..900&display=swap");
 
 @font-face {
   font-family: "Clash Display";
@@ -332,13 +332,39 @@ html::-webkit-scrollbar-thumb:hover {
 }
 
 .hero-title span {
+  display: block;
   color: var(--color-primary);
+  margin-top: 0.5rem;
 }
 
 .hero-subtitle {
   max-width: 42ch;
   color: var(--color-white-85);
   margin-bottom: var(--space-md);
+}
+
+.hero-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.hero-list-item {
+  font-size: 1.15rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-white-85);
+}
+
+.hero-list-icon {
+  font-size: 1.3rem;
+  display: inline-flex;
+  align-items: center;
 }
 
 .hero-actions {
