@@ -9,10 +9,15 @@ const logFormPayload = (label, payload) => {
 
 const trackLeadConversion = () => {
   if (typeof window.gtag !== "function") return;
+  // Standard lead conversion tracking
   window.gtag("event", "conversion", {
     send_to: "AW-17809995237/BXUcCOWG1dYbEOXru6xC",
     value: 1.0,
     currency: "AED",
+  });
+  // Thank-you page conversion tracking
+  window.gtag("event", "conversion", {
+    send_to: "AW-17809995237/aQRRCLLjoqMcEOXru6xC",
   });
 };
 
@@ -317,6 +322,7 @@ const initContactForm = () => {
         form.appendChild(success);
       }
       form.reset();
+      trackLeadConversion();
       // open whatsapp for lead as in hero form
       const whatsappUrl = getWhatsAppRedirectUrl(payload);
       window.open(whatsappUrl, '_blank');
