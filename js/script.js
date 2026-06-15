@@ -15,10 +15,6 @@ const trackLeadConversion = () => {
     value: 1.0,
     currency: "AED",
   });
-  // Thank-you page conversion tracking
-  window.gtag("event", "conversion", {
-    send_to: "AW-17809995237/aQRRCLLjoqMcEOXru6xC",
-  });
 };
 
 const sendAppsScriptRequest = async (payload) => {
@@ -247,11 +243,13 @@ const initContactForm = () => {
   const nameInput = form.querySelector('input[name="contactName"]');
   const messageInput = form.querySelector('textarea[name="contactMessage"]');
   const submitBtn = form.querySelector('button[type="submit"]');
+  const successMessage = form.querySelector('[data-contact-success]');
+  const defaultSubmitLabel = submitBtn?.textContent?.trim() ?? "Submit Now";
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const showError = (msg) => {
-    let err = form.querySelector('.contact-cta__feedback');
+    let err = form.querySelector('.contact-cta__feedback:not([data-contact-success])');
     if (!err) {
       err = document.createElement('div');
       err.className = 'contact-cta__feedback';
@@ -263,7 +261,7 @@ const initContactForm = () => {
   };
 
   const clearError = () => {
-    const err = form.querySelector('.contact-cta__feedback');
+    const err = form.querySelector('.contact-cta__feedback:not([data-contact-success])');
     if (err) err.hidden = true;
   };
 
@@ -279,9 +277,19 @@ const initContactForm = () => {
     return digits.length >= 7;
   };
 
+  form.addEventListener('input', () => {
+    clearError();
+    if (successMessage) {
+      successMessage.hidden = true;
+    }
+  });
+
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
     clearError();
+    if (successMessage) {
+      successMessage.hidden = true;
+    }
 
     if (!nameInput || !nameInput.value.trim()) {
       showError('Please enter your name.');
@@ -300,37 +308,51 @@ const initContactForm = () => {
       return;
     }
 
+    const phoneVal = getInternationalNumber(phoneInput, phoneInput.value || '');
     // Build payload similar to hero form
     const payload = {
       source: 'Contact_Quick_Enquiry',
       name: (nameInput.value || '').trim(),
-      mobile: getInternationalNumber(phoneInput, phoneInput.value || ''),
+      mobile: phoneVal,
+      phone: phoneVal,
       email: (emailInput.value || '').trim(),
       message: (messageInput.value || '').trim(),
     };
 
     try {
-      submitBtn?.setAttribute('aria-busy', 'true');
-      await sendAppsScriptRequest(payload);
-      // show success
-      let success = form.querySelector('[data-contact-success]');
-      if (!success) {
-        success = document.createElement('div');
-        success.setAttribute('data-contact-success', '');
-        success.className = 'contact-cta__feedback';
-        success.textContent = 'Thanks! Your enquiry has been submitted.';
-        form.appendChild(success);
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.cursor = 'progress';
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.textContent = 'Submitting...';
       }
+
+      await sendAppsScriptRequest(payload);
+      
       form.reset();
+      if (successMessage) {
+        successMessage.hidden = false;
+      }
       trackLeadConversion();
+      
       // open whatsapp for lead as in hero form
       const whatsappUrl = getWhatsAppRedirectUrl(payload);
       window.open(whatsappUrl, '_blank');
+
+      // redirect to thank you page
+      setTimeout(() => {
+        window.location.href = "thank-you.html";
+      }, 500);
     } catch (err) {
       console.error('Contact form submission failed', err);
       showError('Submission failed. Please try again later.');
     } finally {
-      submitBtn?.setAttribute('aria-busy', 'false');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.cursor = '';
+        submitBtn.setAttribute('aria-busy', 'false');
+        submitBtn.textContent = defaultSubmitLabel;
+      }
     }
   });
 };
@@ -491,10 +513,12 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       return;
     }
 
+    const phoneVal = getInternationalNumber(phoneInput, values.phone);
     const payload = {
       source: "Landing_Page_Enquiry",
       name: values.fullName,
-      mobile: getInternationalNumber(phoneInput, values.phone),
+      mobile: phoneVal,
+      phone: phoneVal,
       email: values.email,
       service: values.service,
       message: values.message,
@@ -506,9 +530,25 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     updateButton();
 
     try {
-      sendAppsScriptRequest(payload);
+      await sendAppsScriptRequest(payload);
+      form.reset();
+      form.hidden = true;
+      if (successEl) {
+        successEl.hidden = false;
+        successEl.focus();
+      }
+      trackLeadConversion();
+
+      const whatsappUrl = getWhatsAppRedirectUrl(payload);
+      window.open(whatsappUrl, "_blank");
+
+      // redirect to thank you page
+      setTimeout(() => {
+        window.location.href = "thank-you.html";
+      }, 500);
     } catch (err) {
       console.error("Hero form submission failed", err);
+      setError("Submission failed. Please try again later.");
     } finally {
       submitting = false;
       updateButton();
@@ -743,13 +783,15 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     }
 
     const formData = new FormData(modalForm);
+    const phoneVal = getInternationalNumber(
+      modalPhoneInput,
+      formData.get("phone")?.toString().trim() || ""
+    );
     const payload = {
       source: "Landing_Page_Package_Enquiry",
       name: formData.get("fullName")?.toString().trim() || "",
-      phone: getInternationalNumber(
-        modalPhoneInput,
-        formData.get("phone")?.toString().trim() || ""
-      ),
+      mobile: phoneVal,
+      phone: phoneVal,
       email: formData.get("email")?.toString().trim() || "",
       service: formData.get("service")?.toString().trim() || "",
     };
@@ -758,7 +800,22 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     setModalSubmitting(true);
 
     try {
-      sendAppsScriptRequest(payload);
+      await sendAppsScriptRequest(payload);
+      modalForm.reset();
+      if (modalSuccess) {
+        modalForm.hidden = true;
+        modalSuccess.hidden = false;
+        modalSuccess.focus();
+      }
+      trackLeadConversion();
+
+      const whatsappUrl = getWhatsAppRedirectUrl(payload);
+      window.open(whatsappUrl, "_blank");
+
+      // redirect to thank you page
+      setTimeout(() => {
+        window.location.href = "thank-you.html";
+      }, 500);
     } catch (error) {
       console.error("Modal form submission failed", error);
     } finally {
@@ -834,84 +891,4 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
   });
 })();
 
-// Contact CTA form: posts payload to Apps Script and toggles success message
-(() => {
-  const contactForm = document.querySelector(".contact-cta__form");
-  if (!contactForm) return;
-  const submitBtn = contactForm.querySelector("button[type='submit']");
-  const successMessage = contactForm.querySelector("[data-contact-success]");
-  const contactPhoneInput = contactForm.querySelector("[name='contactPhone']");
-  const defaultSubmitLabel = submitBtn?.textContent?.trim() ?? "Submit Now";
-  let submitting = false;
 
-  const updateSubmitState = () => {
-    if (!submitBtn) return;
-    submitBtn.disabled = submitting;
-    submitBtn.style.cursor = submitting ? "progress" : "";
-    submitBtn.setAttribute("aria-busy", submitting ? "true" : "false");
-    submitBtn.textContent = submitting ? "Submitting..." : defaultSubmitLabel;
-  };
-
-  contactForm.addEventListener("input", () => {
-    if (successMessage) {
-      successMessage.hidden = true;
-    }
-    submitting = false;
-    updateSubmitState();
-  });
-
-  contactForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (!contactForm.checkValidity()) {
-      contactForm.reportValidity();
-      return;
-    }
-
-    const formData = new FormData(contactForm);
-    const payload = {
-      source: "Landing_Page_Contact",
-      name: formData.get("contactName")?.toString().trim() || "",
-      phone: getInternationalNumber(
-        contactPhoneInput,
-        formData.get("contactPhone")?.toString().trim() || ""
-      ),
-      email: formData.get("contactEmail")?.toString().trim() || "",
-      message: formData.get("contactMessage")?.toString().trim() || "",
-    };
-    logFormPayload(payload.source, payload);
-
-    submitting = true;
-    updateSubmitState();
-
-    try {
-      sendAppsScriptRequest(payload);
-    } catch (error) {
-      console.error("Contact form submission failed", error);
-    } finally {
-      contactForm.reset();
-      submitting = false;
-      updateSubmitState();
-      if (successMessage) {
-        successMessage.hidden = false;
-      }
-      trackLeadConversion();
-
-      const whatsappUrl = getWhatsAppRedirectUrl(payload);
-      window.open(whatsappUrl, "_blank");
-    }
-  });
-
-  updateSubmitState();
-})();
-
-// Track clicks on the floating WhatsApp consultation button
-(() => {
-  const waFloatBtn = document.getElementById("whatsapp-float-btn");
-  if (waFloatBtn) {
-    waFloatBtn.addEventListener("click", () => {
-      if (typeof trackLeadConversion === "function") {
-        trackLeadConversion();
-      }
-    });
-  }
-})();
