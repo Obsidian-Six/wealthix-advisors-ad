@@ -1619,11 +1619,21 @@ input.no-search-icon {
 /* intl-tel-input fixes: ensure phone input, flags and country list are visible
    regardless of the surrounding section's color and stacking context. */
 .iti {
-  width: 100%;
+  width: 100% !important;
+  display: block !important;
 }
 input[data-intl-phone] {
   color: var(--color-black) !important;
-  padding-left: var(--iti-padding-left, 52px) !important;
+  padding-left: var(--iti-padding-left, 58px) !important;
+  width: 100% !important;
+}
+
+/* Ensure the flag button has a fixed minimum width so input padding stays consistent */
+.iti .iti__selected-country-primary,
+.iti .iti__selected-country,
+.iti__selected-flag {
+  min-width: 50px !important;
+  padding: 0 4px 0 8px !important;
 }
 
 /* Make the selected flag and the dropdown list use a light background
@@ -1651,6 +1661,23 @@ input[data-intl-phone] {
 /* Slight padding for each country row for readability */
 .iti__country {
   padding: 0.45rem 0.75rem !important;
+}
+
+/* Mobile-specific fix: increase left padding on smaller screens where collision is worse */
+@media (max-width: 767px) {
+  input[data-intl-phone] {
+    padding-left: var(--iti-padding-left, 62px) !important;
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Contact section dark background: ensure phone input inside it is also readable */
+.contact-field input[data-intl-phone] {
+  padding-left: var(--iti-padding-left, 58px) !important;
+}
+.contact-field .iti__selected-flag,
+.contact-field .iti__flag-container {
+  background: #ffffff !important;
 }
 
 
@@ -1895,6 +1922,14 @@ body.modal-open {
   color: var(--color-white);
   text-align: center;
   font-weight: 600;
+}
+
+/* Modal form validation error message */
+.enquiry-modal__form .form-message--error {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 640px) {

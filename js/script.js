@@ -264,16 +264,22 @@ const initContactForm = () => {
     if (err) err.hidden = true;
   };
 
-  const isPhoneValid = () => {
-    if (!phoneInput) return false;
+  const getPhoneErrorMessage = () => {
+    if (!phoneInput) return 'Please enter your phone number.';
     const instance = intlTelInstances.get(phoneInput);
     const digits = (phoneInput.value || '').replace(/\D/g, '');
+    if (!digits.length) return 'Please enter your phone number.';
     if (instance && typeof instance.isValidNumber === 'function') {
       try {
-        return instance.isValidNumber() || instance.isPossibleNumber() || (digits.length >= 7 && digits.length <= 15);
+        if (instance.isValidNumber() || instance.isPossibleNumber()) return null;
+        // Get selected country name for a helpful message
+        const countryData = instance.getSelectedCountryData && instance.getSelectedCountryData();
+        const countryName = countryData && countryData.name ? countryData.name : 'the selected country';
+        return `Please enter a valid phone number for ${countryName}. You entered ${digits.length} digit(s).`;
       } catch (e) {}
     }
-    return digits.length >= 7;
+    if (digits.length < 7) return `Please enter a valid phone number (minimum 7 digits). You entered ${digits.length} digit(s).`;
+    return null;
   };
 
   form.addEventListener('input', () => {
@@ -294,12 +300,13 @@ const initContactForm = () => {
       showError('Please enter your name.');
       return;
     }
-    if (!emailInput || !emailPattern.test((emailInput.value||'').trim())) {
-      showError('Please enter a valid email address.');
+    const phoneError = getPhoneErrorMessage();
+    if (phoneError) {
+      showError(phoneError);
       return;
     }
-    if (!isPhoneValid()) {
-      showError('Please enter a valid phone number.');
+    if (!emailInput || !emailPattern.test((emailInput.value||'').trim())) {
+      showError('Please enter a valid email address.');
       return;
     }
     if (!messageInput || !messageInput.value.trim()) {
@@ -455,28 +462,30 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     }, {});
   };
 
-  const isFormValid = (values = getValues()) => {
-    if (!values.fullName) return false;
+  const getFieldError = (values = getValues()) => {
+    if (!values.fullName) return 'Please enter your name.';
     // validate phone using intl-tel-input if available, otherwise ensure digits length
     const phoneField = phoneInput;
-    if (!values.phone) return false;
+    if (!values.phone) return 'Please enter your phone number.';
     const digits = (values.phone || '').toString().replace(/\D/g, '');
     const phoneInstance = phoneField && intlTelInstances.get(phoneField);
     if (phoneInstance && typeof phoneInstance.isValidNumber === 'function') {
       try {
-        if (!phoneInstance.isValidNumber() && !phoneInstance.isPossibleNumber() && (digits.length < 7 || digits.length > 15)) {
-          return false;
+        if (!phoneInstance.isValidNumber() && !phoneInstance.isPossibleNumber()) {
+          const countryData = phoneInstance.getSelectedCountryData && phoneInstance.getSelectedCountryData();
+          const countryName = countryData && countryData.name ? countryData.name : 'the selected country';
+          return `Please enter a valid phone number for ${countryName}. You entered ${digits.length} digit(s).`;
         }
       } catch (e) {
-        if (digits.length < 7) return false;
+        if (digits.length < 7) return `Please enter a valid phone number (minimum 7 digits). You entered ${digits.length} digit(s).`;
       }
     } else {
-      if (digits.length < 7) return false;
+      if (digits.length < 7) return `Please enter a valid phone number (minimum 7 digits). You entered ${digits.length} digit(s).`;
     }
-    if (!emailPattern.test(values.email)) return false;
-    if (!values.service) return false;
-    if (!values.message) return false;
-    return true;
+    if (!emailPattern.test(values.email)) return 'Please enter a valid email address.';
+    if (!values.service) return 'Please select a service.';
+    if (!values.message) return 'Please enter your message.';
+    return null;
   };
 
   const setError = (message = "") => {
@@ -510,8 +519,9 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const values = getValues();
-    if (!isFormValid(values)) {
-      setError("Please complete all required fields with valid details.");
+    const fieldError = getFieldError(values);
+    if (fieldError) {
+      setError(fieldError);
       updateButton();
       return;
     }
@@ -770,23 +780,90 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
 
   modalForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!modalForm.checkValidity()) {
-      modalForm.reportValidity();
+
+    // Field-specific validation for modal
+    const formData = new FormData(modalForm);
+    const nameVal = formData.get("fullName")?.toString().trim() || "";
+    const emailVal = formData.get("email")?.toString().trim() || "";
+    const serviceVal = formData.get("service")?.toString().trim() || "";
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Find or create an error element for the modal form
+    let modalErrorEl = modalForm.querySelector("[data-modal-error]");
+    if (!modalErrorEl) {
+      modalErrorEl = document.createElement("p");
+      modalErrorEl.className = "form-message form-message--error";
+      modalErrorEl.setAttribute("data-modal-error", "");
+      modalErrorEl.setAttribute("role", "alert");
+      modalErrorEl.style.marginTop = "0.5rem";
+      modalForm.appendChild(modalErrorEl);
+    }
+    const setModalError = (msg) => {
+      modalErrorEl.textContent = msg;
+      modalErrorEl.hidden = !msg;
+    };
+
+    // Clear previous errors on input
+    const clearOnInput = () => setModalError("");
+    modalForm.removeEventListener("input", clearOnInput);
+    modalForm.addEventListener("input", clearOnInput);
+
+    if (!nameVal) {
+      setModalError("Please enter your name.");
       return;
     }
 
-    const formData = new FormData(modalForm);
+    // Phone validation
+    const phoneRaw = formData.get("phone")?.toString().trim() || "";
+    const phoneDigits = phoneRaw.replace(/\D/g, "");
+    if (!phoneDigits.length) {
+      setModalError("Please enter your phone number.");
+      return;
+    }
+    const modalPhoneInstance = modalPhoneInput && intlTelInstances.get(modalPhoneInput);
+    if (modalPhoneInstance && typeof modalPhoneInstance.isValidNumber === "function") {
+      try {
+        if (!modalPhoneInstance.isValidNumber() && !modalPhoneInstance.isPossibleNumber()) {
+          const cd = modalPhoneInstance.getSelectedCountryData && modalPhoneInstance.getSelectedCountryData();
+          const cn = cd && cd.name ? cd.name : "the selected country";
+          setModalError(`Please enter a valid phone number for ${cn}. You entered ${phoneDigits.length} digit(s).`);
+          return;
+        }
+      } catch (e) {
+        if (phoneDigits.length < 7) {
+          setModalError(`Please enter a valid phone number (minimum 7 digits). You entered ${phoneDigits.length} digit(s).`);
+          return;
+        }
+      }
+    } else {
+      if (phoneDigits.length < 7) {
+        setModalError(`Please enter a valid phone number (minimum 7 digits). You entered ${phoneDigits.length} digit(s).`);
+        return;
+      }
+    }
+
+    if (!emailPattern.test(emailVal)) {
+      setModalError("Please enter a valid email address.");
+      return;
+    }
+    if (!serviceVal) {
+      setModalError("Please select a service.");
+      return;
+    }
+
+    setModalError("");
+
     const phoneVal = getInternationalNumber(
       modalPhoneInput,
       formData.get("phone")?.toString().trim() || ""
     );
     const payload = {
       source: "Landing_Page_Package_Enquiry",
-      name: formData.get("fullName")?.toString().trim() || "",
+      name: nameVal,
       mobile: phoneVal,
       phone: phoneVal,
-      email: formData.get("email")?.toString().trim() || "",
-      service: formData.get("service")?.toString().trim() || "",
+      email: emailVal,
+      service: serviceVal,
     };
     logFormPayload(payload.source, payload);
 
@@ -811,6 +888,7 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       }, 500);
     } catch (error) {
       console.error("Modal form submission failed", error);
+      setModalError("Submission failed. Please try again later.");
     } finally {
       setModalSubmitting(false);
     }
