@@ -1623,6 +1623,7 @@ input.no-search-icon {
 }
 input[data-intl-phone] {
   color: var(--color-black) !important;
+  padding-left: var(--iti-padding-left, 52px) !important;
 }
 
 /* Make the selected flag and the dropdown list use a light background

@@ -23,7 +23,7 @@ const sendAppsScriptRequest = async (payload) => {
       "GOOGLE_APPS_SCRIPT_URL is not defined. Payload will not be sent.",
       payload
     );
-    return { ok: false, error: new Error("Missing endpoint") };
+    throw new Error("Missing Apps Script endpoint");
   }
 
   try {
@@ -36,10 +36,9 @@ const sendAppsScriptRequest = async (payload) => {
       },
       body: JSON.stringify(payload),
     });
-    return { ok: true };
   } catch (error) {
     console.error("Apps Script submission failed", error);
-    return { ok: false, error };
+    throw error;
   }
 };
 
@@ -268,12 +267,12 @@ const initContactForm = () => {
   const isPhoneValid = () => {
     if (!phoneInput) return false;
     const instance = intlTelInstances.get(phoneInput);
+    const digits = (phoneInput.value || '').replace(/\D/g, '');
     if (instance && typeof instance.isValidNumber === 'function') {
       try {
-        return instance.isValidNumber();
+        return instance.isValidNumber() || instance.isPossibleNumber() || (digits.length >= 7 && digits.length <= 15);
       } catch (e) {}
     }
-    const digits = (phoneInput.value || '').replace(/\D/g, '');
     return digits.length >= 7;
   };
 
@@ -461,13 +460,17 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     // validate phone using intl-tel-input if available, otherwise ensure digits length
     const phoneField = phoneInput;
     if (!values.phone) return false;
+    const digits = (values.phone || '').toString().replace(/\D/g, '');
     const phoneInstance = phoneField && intlTelInstances.get(phoneField);
     if (phoneInstance && typeof phoneInstance.isValidNumber === 'function') {
       try {
-        if (!phoneInstance.isValidNumber()) return false;
-      } catch (e) {}
+        if (!phoneInstance.isValidNumber() && !phoneInstance.isPossibleNumber() && (digits.length < 7 || digits.length > 15)) {
+          return false;
+        }
+      } catch (e) {
+        if (digits.length < 7) return false;
+      }
     } else {
-      const digits = (values.phone || '').toString().replace(/\D/g, '');
       if (digits.length < 7) return false;
     }
     if (!emailPattern.test(values.email)) return false;
@@ -552,16 +555,6 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     } finally {
       submitting = false;
       updateButton();
-      form.reset();
-      form.hidden = true;
-      if (successEl) {
-        successEl.hidden = false;
-        successEl.focus();
-      }
-      trackLeadConversion();
-
-      const whatsappUrl = getWhatsAppRedirectUrl(payload);
-      window.open(whatsappUrl, "_blank");
     }
   });
 
@@ -819,17 +812,7 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     } catch (error) {
       console.error("Modal form submission failed", error);
     } finally {
-      modalForm.reset();
       setModalSubmitting(false);
-      if (modalSuccess) {
-        modalForm.hidden = true;
-        modalSuccess.hidden = false;
-        modalSuccess.focus();
-      }
-      trackLeadConversion();
-
-      const whatsappUrl = getWhatsAppRedirectUrl(payload);
-      window.open(whatsappUrl, "_blank");
     }
   });
 
