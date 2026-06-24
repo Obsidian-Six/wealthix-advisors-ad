@@ -1,12 +1,11 @@
 /**
- * FOOLPROOF Google Apps Script Code for Wealthix Lead Capture
+ * FOOLPROOF Google Apps Script Code for Wealthix Lead Capture with CAPTCHA Verification
  * 
  * This version allows you to explicitly link your Spreadsheet by its ID,
- * which solves issues if you created a "Standalone" script or if Google
- * cannot find the "Active" spreadsheet.
+ * and adds server-side verification for the Math CAPTCHA to reject bots.
  */
 
-// 1. paste your spreadsheet ID between the quotes below.
+// 1. Paste your spreadsheet ID between the quotes below.
 // You can find this ID in the URL of your Google Sheet.
 // For example: https://docs.google.com/spreadsheets/d/1A2B3C4D5E6F/edit -> ID is "1A2B3C4D5E6F"
 const SPREADSHEET_ID = "YOUR_SPREADSHEET_ID_HERE";
@@ -16,7 +15,7 @@ const SHEET_NAME = "Sheet1";
 
 function doPost(e) {
   try {
-    // Open the spreadsheet by ID if provided, otherwise fallback to the active container-bound sheet
+    // Open the spreadsheet by ID if provided, otherwise fallback to active sheet
     var ss;
     if (SPREADSHEET_ID && SPREADSHEET_ID !== "YOUR_SPREADSHEET_ID_HERE" && SPREADSHEET_ID.trim() !== "") {
       ss = SpreadsheetApp.openById(SPREADSHEET_ID.trim());
@@ -28,7 +27,7 @@ function doPost(e) {
       throw new Error("Could not find Google Spreadsheet. Please make sure SPREADSHEET_ID is set correctly in the script.");
     }
     
-    // Open the sheet (tab) by name, fallback to the first sheet, fallback to active sheet
+    // Open the sheet (tab) by name
     var sheet = ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0] || ss.getActiveSheet();
     if (!sheet) {
       throw new Error("Could not find any sheet tab inside the spreadsheet.");
@@ -44,13 +43,40 @@ function doPost(e) {
       data = {};
     }
     
+    // Server-side CAPTCHA Verification
+    var captchaVerified = "N/A";
+    if (data.captchaQuestion && data.captchaAnswer !== undefined && data.captchaAnswer !== "") {
+      captchaVerified = "Failed";
+      var parts = data.captchaQuestion.split("+");
+      if (parts.length === 2) {
+        var num1 = parseInt(parts[0].trim(), 10);
+        var num2 = parseInt(parts[1].trim(), 10);
+        var expected = num1 + num2;
+        var actual = parseInt(data.captchaAnswer, 10);
+        if (expected === actual) {
+          captchaVerified = "Passed";
+        } else {
+          throw new Error("CAPTCHA verification failed. Bot detected. Expected " + expected + ", got " + actual);
+        }
+      }
+    }
+    
     // Define headers
-    var headers = ["Timestamp", "Source", "Name", "Phone", "Email", "Service", "Message"];
+    var headers = ["Timestamp", "Source", "Name", "Phone", "Email", "Service", "Message", "Captcha Verified"];
     
     // Check if sheet is empty, if so, write headers
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(headers);
       sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#f3f3f3");
+    } else {
+      // Proactively check if the header has "Captcha Verified" column and append it if not present
+      var lastCol = sheet.getLastColumn();
+      if (lastCol < headers.length) {
+        var existingHeaders = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+        if (existingHeaders.indexOf("Captcha Verified") === -1) {
+          sheet.getRange(1, lastCol + 1).setValue("Captcha Verified").setFontWeight("bold").setBackground("#f3f3f3");
+        }
+      }
     }
     
     // Map fields from the payload
@@ -67,10 +93,11 @@ function doPost(e) {
       timestamp,
       source,
       name,
-      "'" + phone, // Prefix with ' to treat as text and preserve formatting (leading +, zeros)
+      "'" + phone, // Prefix with ' to treat as text and preserve formatting
       email,
       service,
-      message
+      message,
+      captchaVerified
     ];
     
     // Append row
