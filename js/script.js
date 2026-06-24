@@ -1,7 +1,7 @@
 const GOOGLE_APPS_SCRIPT_URL =
   window.GOOGLE_APPS_SCRIPT_URL ||
   window.googleAppsScriptUrl ||
-  "https://script.google.com/macros/s/AKfycbyq4ex8jXo2UECHH10IeLCZ3KZoF6KvGGzmYthbrc58yIkOc3wQLbo8DExvE1EuByT-/exec";
+  "https://script.google.com/macros/s/AKfycbxSiE2OK4NyASeTETqdlaKf1UK9DaanYpTk842Soliusc4zqxFTQLaroFd-EplJAOks/exec";
 
 const logFormPayload = (label, payload) => {
   console.log(`[${label}] submission payload`, payload);

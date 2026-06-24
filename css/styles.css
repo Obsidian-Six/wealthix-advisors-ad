@@ -1624,7 +1624,7 @@ input.no-search-icon {
 }
 input[data-intl-phone] {
   color: var(--color-black) !important;
-  padding-left: var(--iti-padding-left, 58px) !important;
+  padding-left: max(85px, var(--iti-padding-left, 85px)) !important;
   width: 100% !important;
 }
 
@@ -1666,14 +1666,14 @@ input[data-intl-phone] {
 /* Mobile-specific fix: increase left padding on smaller screens where collision is worse */
 @media (max-width: 767px) {
   input[data-intl-phone] {
-    padding-left: var(--iti-padding-left, 62px) !important;
+    padding-left: max(85px, var(--iti-padding-left, 85px)) !important;
     font-size: 0.95rem !important;
   }
 }
 
 /* Contact section dark background: ensure phone input inside it is also readable */
 .contact-field input[data-intl-phone] {
-  padding-left: var(--iti-padding-left, 58px) !important;
+  padding-left: max(85px, var(--iti-padding-left, 85px)) !important;
 }
 .contact-field .iti__selected-flag,
 .contact-field .iti__flag-container {
