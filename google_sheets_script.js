@@ -3,7 +3,11 @@
  * 
  * This version allows you to explicitly link your Spreadsheet by its ID,
  * captures the user's IP Address, and logs the CAPTCHA status as boolean TRUE / FALSE
- * which can be rendered as check boxes inside Google Sheets!
+ * (compatible with Google Sheets checkbox formatting!).
+ * 
+ * Works for both:
+ * 1. Checkbox CAPTCHA ("I verify that I am human...")
+ * 2. Math CAPTCHA ("Solve: X + Y = ?")
  */
 
 // 1. Paste your spreadsheet ID between the quotes below.
@@ -14,7 +18,7 @@ const SPREADSHEET_ID = "YOUR_SPREADSHEET_ID_HERE";
 // 2. Specify the name of the tab you want to save data to (e.g., "Sheet1", "Leads", etc.)
 const SHEET_NAME = "Sheet1";
 
-// 3. Set this to true to reject submissions that have an incorrect CAPTCHA answer
+// 3. Set this to true to reject submissions that have an incorrect CAPTCHA answer or unchecked checkbox
 const REQUIRE_CAPTCHA = true;
 
 function doPost(e) {
@@ -52,6 +56,7 @@ function doPost(e) {
     if (data.captchaQuestion && data.captchaAnswer !== undefined && data.captchaAnswer !== "") {
       var parts = data.captchaQuestion.split("+");
       if (parts.length === 2) {
+        // Verification for Math CAPTCHA
         var num1 = parseInt(parts[0].trim(), 10);
         var num2 = parseInt(parts[1].trim(), 10);
         var expected = num1 + num2;
@@ -61,10 +66,16 @@ function doPost(e) {
         } else if (REQUIRE_CAPTCHA) {
           throw new Error("CAPTCHA verification failed. Bot detected. Expected " + expected + ", got " + actual);
         }
+      } else {
+        // Verification for Checkbox CAPTCHA
+        captchaVerified = (data.captchaAnswer === "true" || data.captchaAnswer === true);
+        if (REQUIRE_CAPTCHA && !captchaVerified) {
+          throw new Error("CAPTCHA verification failed. Checkbox was not ticked.");
+        }
       }
-    } else if (REQUIRE_CAPTCHA && (data.captchaQuestion || data.captchaAnswer)) {
-      // If CAPTCHA is required but verification failed/empty
-      throw new Error("CAPTCHA answer is missing or incomplete.");
+    } else if (REQUIRE_CAPTCHA) {
+      // If CAPTCHA is required but verification fields are missing
+      throw new Error("CAPTCHA verification is missing or incomplete.");
     }
     
     // Define headers
@@ -110,7 +121,7 @@ function doPost(e) {
       email,
       service,
       message,
-      captchaVerified, // Boolean TRUE/FALSE (Google Sheets formats this as checkbox automatically!)
+      captchaVerified, // Boolean TRUE/FALSE (renders as checkbox automatically!)
       ip
     ];
     

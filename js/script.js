@@ -20,30 +20,11 @@ const fetchClientIp = async () => {
 };
 document.addEventListener("DOMContentLoaded", fetchClientIp);
 
-// CAPTCHA Management
-const captchas = new Map();
-
-const initCaptcha = (form, questionEl, answerEl) => {
-  if (!form || !questionEl || !answerEl) return;
-  const num1 = Math.floor(Math.random() * 9) + 2; // Random number 2-10
-  const num2 = Math.floor(Math.random() * 9) + 2;
-  const expected = num1 + num2;
-  captchas.set(form, { num1, num2, expected, questionEl, answerEl });
-  questionEl.textContent = `${num1} + ${num2}`;
-  answerEl.value = "";
-};
-
-const validateCaptcha = (form, questionEl, answerEl, showErrorFn) => {
-  const data = captchas.get(form);
-  if (!data) return true;
-  const userVal = parseInt(answerEl.value.trim(), 10);
-  if (Number.isNaN(userVal)) {
-    showErrorFn("Please solve the security question.");
-    return false;
-  }
-  if (userVal !== data.expected) {
-    showErrorFn("Incorrect security answer. Please try again.");
-    initCaptcha(form, questionEl, answerEl);
+// CAPTCHA Management (Checkbox based)
+const validateCheckboxCaptcha = (checkboxEl, showErrorFn) => {
+  if (!checkboxEl) return true;
+  if (!checkboxEl.checked) {
+    showErrorFn("Please check the box to verify you are human.");
     return false;
   }
   return true;
@@ -287,9 +268,7 @@ const initContactForm = () => {
   const successMessage = form.querySelector('[data-contact-success]');
   const defaultSubmitLabel = submitBtn?.textContent?.trim() ?? "Submit Now";
 
-  const captchaQuestion = form.querySelector('#contact-captcha-question');
-  const captchaAnswer = form.querySelector('#contact-captcha-answer');
-  initCaptcha(form, captchaQuestion, captchaAnswer);
+  const captchaCheckbox = form.querySelector('#contact-captcha-checkbox');
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -360,12 +339,11 @@ const initContactForm = () => {
       return;
     }
 
-    if (!validateCaptcha(form, captchaQuestion, captchaAnswer, showError)) {
+    if (!validateCheckboxCaptcha(captchaCheckbox, showError)) {
       return;
     }
 
     const phoneVal = getInternationalNumber(phoneInput, phoneInput.value || '');
-    const captchaData = captchas.get(form) || {};
     const payload = {
       source: 'Contact_Quick_Enquiry',
       name: (nameInput.value || '').trim(),
@@ -373,8 +351,8 @@ const initContactForm = () => {
       phone: phoneVal,
       email: (emailInput.value || '').trim(),
       message: (messageInput.value || '').trim(),
-      captchaQuestion: captchaData.num1 ? `${captchaData.num1} + ${captchaData.num2}` : "",
-      captchaAnswer: (captchaAnswer.value || '').trim(),
+      captchaQuestion: "Checkbox",
+      captchaAnswer: captchaCheckbox && captchaCheckbox.checked ? "true" : "false",
       ip: clientIp,
     };
 
@@ -389,7 +367,6 @@ const initContactForm = () => {
       await sendAppsScriptRequest(payload);
       
       form.reset();
-      initCaptcha(form, captchaQuestion, captchaAnswer);
       if (successMessage) {
         successMessage.hidden = false;
       }
@@ -503,9 +480,7 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
   const defaultLabel = labelEl?.textContent ?? "Submit Your Enquiry";
   let submitting = false;
 
-  const captchaQuestion = form.querySelector('#hero-captcha-question');
-  const captchaAnswer = form.querySelector('#hero-captcha-answer');
-  initCaptcha(form, captchaQuestion, captchaAnswer);
+  const captchaCheckbox = form.querySelector('#hero-captcha-checkbox');
 
   const requiredFields = ["fullName", "phone", "email", "service", "message"];
 
@@ -584,13 +559,12 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       return;
     }
 
-    if (!validateCaptcha(form, captchaQuestion, captchaAnswer, setError)) {
+    if (!validateCheckboxCaptcha(captchaCheckbox, setError)) {
       updateButton();
       return;
     }
 
     const phoneVal = getInternationalNumber(phoneInput, values.phone);
-    const captchaData = captchas.get(form) || {};
     const payload = {
       source: "Landing_Page_Enquiry",
       name: values.fullName,
@@ -599,8 +573,8 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       email: values.email,
       service: values.service,
       message: values.message,
-      captchaQuestion: captchaData.num1 ? `${captchaData.num1} + ${captchaData.num2}` : "",
-      captchaAnswer: (captchaAnswer.value || '').trim(),
+      captchaQuestion: "Checkbox",
+      captchaAnswer: captchaCheckbox && captchaCheckbox.checked ? "true" : "false",
       ip: clientIp,
     };
     logFormPayload(payload.source, payload);
@@ -612,7 +586,6 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     try {
       await sendAppsScriptRequest(payload);
       form.reset();
-      initCaptcha(form, captchaQuestion, captchaAnswer);
       form.hidden = true;
       if (successEl) {
         successEl.hidden = false;
@@ -720,11 +693,7 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
   const modalPhoneInput = modalForm?.querySelector("[name='phone']");
   const modalSuccess = modal.querySelector("[data-modal-success]");
 
-  const modalCaptchaQuestion = modalForm?.querySelector('#modal-captcha-question');
-  const modalCaptchaAnswer = modalForm?.querySelector('#modal-captcha-answer');
-  if (modalForm && modalCaptchaQuestion && modalCaptchaAnswer) {
-    initCaptcha(modalForm, modalCaptchaQuestion, modalCaptchaAnswer);
-  }
+  const modalCaptchaCheckbox = modalForm?.querySelector('#modal-captcha-checkbox');
 
   const focusableSelector =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -793,9 +762,6 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     if (modalForm) {
       modalForm.hidden = false;
       modalForm.reset();
-    }
-    if (modalCaptchaQuestion && modalCaptchaAnswer) {
-      initCaptcha(modalForm, modalCaptchaQuestion, modalCaptchaAnswer);
     }
     if (modalSuccess) {
       modalSuccess.hidden = true;
@@ -929,10 +895,8 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       return;
     }
 
-    if (modalForm && modalCaptchaQuestion && modalCaptchaAnswer) {
-      if (!validateCaptcha(modalForm, modalCaptchaQuestion, modalCaptchaAnswer, setModalError)) {
-        return;
-      }
+    if (!validateCheckboxCaptcha(modalCaptchaCheckbox, setModalError)) {
+      return;
     }
 
     setModalError("");
@@ -941,7 +905,6 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       modalPhoneInput,
       formData.get("phone")?.toString().trim() || ""
     );
-    const captchaData = modalForm ? captchas.get(modalForm) : null;
     const payload = {
       source: "Landing_Page_Package_Enquiry",
       name: nameVal,
@@ -949,8 +912,8 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       phone: phoneVal,
       email: emailVal,
       service: serviceVal,
-      captchaQuestion: captchaData && captchaData.num1 ? `${captchaData.num1} + ${captchaData.num2}` : "",
-      captchaAnswer: modalCaptchaAnswer ? (modalCaptchaAnswer.value || '').trim() : "",
+      captchaQuestion: "Checkbox",
+      captchaAnswer: modalCaptchaCheckbox && modalCaptchaCheckbox.checked ? "true" : "false",
       ip: clientIp,
     };
     logFormPayload(payload.source, payload);
@@ -960,9 +923,6 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
     try {
       await sendAppsScriptRequest(payload);
       modalForm.reset();
-      if (modalCaptchaQuestion && modalCaptchaAnswer) {
-        initCaptcha(modalForm, modalCaptchaQuestion, modalCaptchaAnswer);
-      }
       if (modalSuccess) {
         modalForm.hidden = true;
         modalSuccess.hidden = false;

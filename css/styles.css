@@ -2152,58 +2152,36 @@ body.modal-open {
   }
 }
 
-/* CAPTCHA Styles */
+/* Checkbox CAPTCHA Styles */
 .captcha-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--space-xs, 8px);
-  margin-top: var(--space-xs, 12px);
-  margin-bottom: var(--space-xs, 12px);
+  gap: 10px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   width: 100%;
 }
+.captcha-checkbox {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  margin: 0 !important;
+  cursor: pointer;
+  accent-color: var(--color-primary, #0070f3);
+}
 .captcha-label {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: 0.9rem;
   color: var(--color-black, #0b1f33);
-  white-space: nowrap;
-}
-.captcha-question {
-  color: var(--color-primary, #0070f3);
-  font-size: 1rem;
-  font-weight: 700;
-}
-.captcha-input {
-  flex: 1;
-  min-width: 60px !important;
-  max-width: 120px !important;
-  padding: 0.85rem 1rem !important;
-  border-radius: 12px !important;
-  border: 1px solid var(--color-gray-light-50, #d9d9d9) !important;
-  background: transparent !important;
-  color: var(--color-black, #0b1f33) !important;
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-  text-align: center;
-}
-.captcha-input:focus {
-  border-color: var(--color-primary, #0070f3) !important;
-  box-shadow: 0 0 0 3px var(--color-primary-10, rgba(0, 112, 243, 0.1)) !important;
-  outline: none;
+  cursor: pointer;
+  user-select: none;
 }
 
 /* Contact form captcha dark styling overrides */
 .contact-cta__form .captcha-label {
-  color: #ffffff !important;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
-.contact-cta__form .captcha-question {
-  color: var(--color-secondary, #ffd700) !important;
-}
-.contact-cta__form .captcha-input {
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  color: #ffffff !important;
-}
-.contact-cta__form .captcha-input:focus {
-  border-color: var(--color-secondary, #ffd700) !important;
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15) !important;
+.contact-cta__form .captcha-checkbox {
+  accent-color: var(--color-secondary, #ffd700);
 }
