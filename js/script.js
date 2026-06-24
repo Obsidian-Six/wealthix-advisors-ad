@@ -7,6 +7,19 @@ const logFormPayload = (label, payload) => {
   console.log(`[${label}] submission payload`, payload);
 };
 
+// Fetch client IP on load to send with form submissions
+let clientIp = "";
+const fetchClientIp = async () => {
+  try {
+    const response = await fetch("https://api.ipify.org?format=json");
+    const data = await response.json();
+    clientIp = data.ip || "";
+  } catch (err) {
+    console.warn("Could not fetch client IP", err);
+  }
+};
+document.addEventListener("DOMContentLoaded", fetchClientIp);
+
 // CAPTCHA Management
 const captchas = new Map();
 
@@ -362,6 +375,7 @@ const initContactForm = () => {
       message: (messageInput.value || '').trim(),
       captchaQuestion: captchaData.num1 ? `${captchaData.num1} + ${captchaData.num2}` : "",
       captchaAnswer: (captchaAnswer.value || '').trim(),
+      ip: clientIp,
     };
 
     try {
@@ -587,6 +601,7 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       message: values.message,
       captchaQuestion: captchaData.num1 ? `${captchaData.num1} + ${captchaData.num2}` : "",
       captchaAnswer: (captchaAnswer.value || '').trim(),
+      ip: clientIp,
     };
     logFormPayload(payload.source, payload);
 
@@ -936,6 +951,7 @@ document.addEventListener('DOMContentLoaded', initPhoneDigitLimitAndAutoCountry)
       service: serviceVal,
       captchaQuestion: captchaData && captchaData.num1 ? `${captchaData.num1} + ${captchaData.num2}` : "",
       captchaAnswer: modalCaptchaAnswer ? (modalCaptchaAnswer.value || '').trim() : "",
+      ip: clientIp,
     };
     logFormPayload(payload.source, payload);
 
